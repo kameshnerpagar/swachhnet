@@ -100,10 +100,18 @@ export default function ComplaintCard({ complaint, onStatusChange, isAdmin }) {
     }
   };
 
+  const isSlaBreach = !['resolved', 'rejected'].includes(complaint.status) && 
+    (Date.now() - new Date(complaint.createdAt).getTime()) > 48 * 60 * 60 * 1000;
+
   return (
-    <div className="card hover:border-brand-700/30 transition-all duration-200 animate-slide-up relative overflow-hidden">
+    <div className={`card transition-all duration-200 animate-slide-up relative overflow-hidden ${isSlaBreach ? 'border-red-500 shadow-[0_0_15px_rgba(239,68,68,0.15)] dark:border-red-500/50' : 'hover:border-brand-700/30'}`}>
+      {isSlaBreach && (
+        <div className="absolute top-0 left-0 right-0 bg-red-600 text-white text-[10px] font-bold text-center tracking-widest py-0.5 z-20 uppercase animate-pulse">
+          ⚠️ SLA Breach (48h+)
+        </div>
+      )}
       {/* Image */}
-      <div className={`relative mb-4 rounded-xl overflow-hidden bg-gray-100 dark:bg-dark-700 aspect-video flex`}>
+      <div className={`relative mb-4 rounded-xl overflow-hidden bg-gray-100 dark:bg-dark-700 aspect-video flex ${isSlaBreach ? 'mt-4' : ''}`}>
         <div className={`relative h-full ${complaint.afterImageUrl ? 'w-1/2 border-r border-gray-800' : 'w-full'}`}>
           <img
             src={complaint.imageUrl}

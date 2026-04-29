@@ -42,7 +42,18 @@ const getNearbyAuthorities = async (req, res) => {
  */
 const getAllAuthorities = async (req, res) => {
   try {
-    const authorities = await User.find({ role: 'admin' }).select('-password');
+    const authorities = await User.find({ role: 'admin' }).select('-password').lean();
+
+    const fortyEightHoursAgo = new Date(Date.now() - 48 * 60 * 60 * 1000);
+    for (let auth of authorities) {
+      const breachCount = await Complaint.countDocuments({
+        authorityId: auth._id,
+        status: { $nin: ['resolved', 'rejected'] },
+        createdAt: { $lt: fortyEightHoursAgo }
+      });
+      auth.slaBreaches = breachCount;
+    }
+
     res.json({ success: true, count: authorities.length, authorities });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });

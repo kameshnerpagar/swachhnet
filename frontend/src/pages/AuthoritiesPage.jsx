@@ -100,6 +100,11 @@ export default function AuthoritiesPage() {
                     <p className={`text-xs font-medium ${isDark ? 'text-gray-600' : 'text-gray-400'}`}>
                       {rating.count} review{rating.count !== 1 && 's'}
                     </p>
+                    {auth.slaBreaches > 0 && (
+                      <div className="mt-2 inline-flex items-center gap-1 bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider animate-pulse">
+                        ⚠️ {auth.slaBreaches} Breach{auth.slaBreaches > 1 ? 'es' : ''}
+                      </div>
+                    )}
                   </div>
                 </div>
               )
