@@ -11,24 +11,10 @@ const getCentralDashboard = async (req, res) => {
     // 1. Fetch all authorities
     const authorities = await User.find({ role: 'admin' }).select('-password').lean();
     
-    // 2. Compute system-wide totals and average resolution time
+    // 2. Compute system-wide totals
     let totalComplaints = await Complaint.countDocuments();
-    let totalResolved = 0;
-    let totalResolutionTimeMs = 0;
-
     const resolvedComplaints = await Complaint.find({ status: 'resolved' }).lean();
-    totalResolved = resolvedComplaints.length;
-
-    resolvedComplaints.forEach(c => {
-      // updatedAt is roughly the time it was marked resolved
-      const resTime = new Date(c.updatedAt).getTime() - new Date(c.createdAt).getTime();
-      totalResolutionTimeMs += resTime;
-    });
-
-    const avgResTimeMs = totalResolved > 0 ? totalResolutionTimeMs / totalResolved : 0;
-    
-    // Convert ms to hours
-    const avgResolutionHours = avgResTimeMs / (1000 * 60 * 60);
+    let totalResolved = resolvedComplaints.length;
 
     // 3. Find breached complaints and map them to authorities
     const fortyEightHoursAgo = new Date(Date.now() - 48 * 60 * 60 * 1000);
@@ -58,7 +44,6 @@ const getCentralDashboard = async (req, res) => {
           totalWards: authorities.length,
           totalComplaints,
           totalResolved,
-          avgResolutionHours: avgResolutionHours.toFixed(1),
           totalBreaches: breachedComplaints.length
         },
         authorities: authorityMetrics,

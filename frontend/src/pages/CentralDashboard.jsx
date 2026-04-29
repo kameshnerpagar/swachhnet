@@ -60,7 +60,7 @@ export default function CentralDashboard() {
         </div>
 
         {/* Top KPI Cards */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-10">
           <div className={`p-5 rounded-2xl border ${isDark ? 'bg-dark-800 border-gray-700' : 'bg-white border-gray-100 shadow-sm'}`}>
             <p className="text-xs text-gray-500 font-bold uppercase tracking-wider mb-1">Total Wards</p>
             <p className="text-3xl font-display font-bold text-brand-500">{systemMetrics.totalWards}</p>
@@ -68,10 +68,6 @@ export default function CentralDashboard() {
           <div className={`p-5 rounded-2xl border ${isDark ? 'bg-dark-800 border-gray-700' : 'bg-white border-gray-100 shadow-sm'}`}>
             <p className="text-xs text-gray-500 font-bold uppercase tracking-wider mb-1">Total Complaints</p>
             <p className="text-3xl font-display font-bold text-brand-500">{systemMetrics.totalComplaints}</p>
-          </div>
-          <div className={`p-5 rounded-2xl border ${isDark ? 'bg-dark-800 border-gray-700' : 'bg-white border-gray-100 shadow-sm'}`}>
-            <p className="text-xs text-gray-500 font-bold uppercase tracking-wider mb-1">Avg Resolution</p>
-            <p className="text-3xl font-display font-bold text-green-500">{systemMetrics.avgResolutionHours}h</p>
           </div>
           <div className={`p-5 rounded-2xl border ${isDark ? 'bg-dark-800 border-red-500/30' : 'bg-red-50 border-red-200 shadow-sm'}`}>
             <p className="text-xs text-red-500 font-bold uppercase tracking-wider mb-1">Active Breaches</p>
