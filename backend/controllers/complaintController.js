@@ -270,11 +270,62 @@ const workerSubmit = async (req, res) => {
     if (!req.file) return res.status(400).json({ success: false, message: 'After image proof is required' });
 
     const complaint = await Complaint.findById(id);
-    if (!complaint) return res.status(404).json({ success: false, message: 'Complaint not found' });
+    if (!complaint) {
+      await cloudinary.uploader.destroy(req.file.filename);
+      return res.status(404).json({ success: false, message: 'Complaint not found' });
+    }
 
     if (complaint.workerId?.toString() !== req.user._id.toString()) {
+      await cloudinary.uploader.destroy(req.file.filename);
       return res.status(403).json({ success: false, message: 'You are not assigned to this complaint' });
     }
+
+    // --- GEMINI AI MULTI-MODAL VALIDATION ---
+    try {
+      // 1. Wait 1.5 seconds for Cloudinary to propagate the newly uploaded After image
+      await new Promise(resolve => setTimeout(resolve, 1500));
+
+      // 2. Fetch BOTH the Before and After images
+      const [beforeResponse, afterResponse] = await Promise.all([
+        axios.get(complaint.imageUrl, { responseType: 'arraybuffer' }),
+        axios.get(req.file.path, { responseType: 'arraybuffer' })
+      ]);
+
+      const beforeBase64 = Buffer.from(beforeResponse.data, 'binary').toString('base64');
+      const afterBase64 = Buffer.from(afterResponse.data, 'binary').toString('base64');
+
+      const genAI = new GoogleGenerativeAI(process.env.G_API);
+      const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
+
+      const prompt = "I am providing two images. The first is a 'Before' photo showing a garbage problem. The second is an 'After' photo uploaded by a sanitation worker. Has the specific garbage from the first photo been successfully cleaned up in the second photo? Reply strictly with a single word: YES or NO.";
+      
+      // We pass the prompt, and both inline images
+      const result = await model.generateContent([
+        prompt,
+        { inlineData: { data: beforeBase64, mimeType: 'image/jpeg' } },
+        { inlineData: { data: afterBase64, mimeType: req.file.mimetype || 'image/jpeg' } }
+      ]);
+
+      const aiResponse = result.response.text().trim().toLowerCase();
+      console.log(`[AI Worker Validation] Result for ${req.file.filename}: ${aiResponse}`);
+
+      if (!aiResponse.includes('yes')) {
+        await cloudinary.uploader.destroy(req.file.filename);
+        return res.status(400).json({
+          success: false,
+          message: 'AI Validation Failed: The AI determined this area has not been properly cleaned, or the image is invalid.'
+        });
+      }
+    } catch (aiError) {
+      console.error('[AI Worker Validation Outage]', aiError.message);
+      // Delete the image because we hard-fail
+      await cloudinary.uploader.destroy(req.file.filename);
+      return res.status(500).json({
+        success: false,
+        message: 'AI Validation Service Error. Please try again shortly. Details: ' + aiError.message
+      });
+    }
+    // --- END AI VALIDATION ---
 
     complaint.afterImageUrl = req.file.path;
     complaint.afterImagePublicId = req.file.filename;
@@ -285,6 +336,7 @@ const workerSubmit = async (req, res) => {
 
     res.json({ success: true, message: 'Proof submitted. Pending verification.', complaint });
   } catch (err) {
+    if (req.file) await cloudinary.uploader.destroy(req.file.filename);
     res.status(500).json({ success: false, message: err.message });
   }
 };
