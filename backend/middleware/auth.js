@@ -41,4 +41,12 @@ const adminOnly = (req, res, next) => {
   return res.status(403).json({ success: false, message: 'Access denied. Admins only.' });
 };
 
-module.exports = { protect, adminOnly };
+// Additional middleware to restrict access to superadmins only
+const superAdminOnly = (req, res, next) => {
+  if (req.user && req.user.role === 'superadmin') {
+    return next();
+  }
+  return res.status(403).json({ success: false, message: 'Access denied. Central Authority only.' });
+};
+
+module.exports = { protect, adminOnly, superAdminOnly };

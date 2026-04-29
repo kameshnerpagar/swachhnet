@@ -19,6 +19,7 @@ export default function Navbar() {
 
   const isAdmin = user?.role === 'admin';
   const isWorker = user?.role === 'worker';
+  const isSuperAdmin = user?.role === 'superadmin';
 
   return (
     <nav className="navbar sticky top-0 z-50 backdrop-blur-xl">
@@ -26,7 +27,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16">
 
           {/* Logo */}
-          <Link to={isAdmin ? '/admin' : isWorker ? '/worker' : '/dashboard'} className="flex items-center gap-2.5">
+          <Link to={isSuperAdmin ? '/central-dashboard' : isAdmin ? '/admin' : isWorker ? '/worker' : '/dashboard'} className="flex items-center gap-2.5">
             <div className="w-12 h-12 rounded-lg bg-brand-500 flex items-center justify-center text-lg">
               <img src="https://images.scalebranding.com/leaf-tech-logo-5e84d08d-8872-497f-a568-a91e870978c6.jpg" alt="logo" />
             </div>
@@ -37,7 +38,18 @@ export default function Navbar() {
 
           {/* Nav Links */}
           <div className="hidden sm:flex items-center gap-1">
-            {isAdmin ? (
+            {isSuperAdmin ? (
+              <Link
+                to="/central-dashboard"
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  location.pathname === '/central-dashboard'
+                    ? 'bg-brand-500/15 text-brand-400'
+                    : isDark ? 'text-gray-400 hover:text-gray-200' : 'text-gray-500 hover:text-gray-800'
+                }`}
+              >
+                Central Authority
+              </Link>
+            ) : isAdmin ? (
               <Link
                 to="/admin"
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${

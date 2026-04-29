@@ -29,10 +29,12 @@ app.use(express.urlencoded({ extended: true }));
 const authRoutes = require('./routes/auth');
 const complaintRoutes = require('./routes/complaints');
 const authorityRoutes = require('./routes/authorityRoutes');
+const centralRoutes = require('./routes/central');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/complaints', complaintRoutes);
 app.use('/api/authorities', authorityRoutes);
+app.use('/api/central', centralRoutes);
 
 // Health check endpoint
 app.get('/', (req, res) => {

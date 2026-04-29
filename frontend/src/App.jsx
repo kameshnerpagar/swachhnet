@@ -13,6 +13,7 @@ import ReportPage from './pages/ReportPage';
 import AdminDashboard from './pages/AdminDashboard';
 import WorkerDashboard from './pages/WorkerDashboard';
 import AuthoritiesPage from './pages/AuthoritiesPage';
+import CentralDashboard from './pages/CentralDashboard';
 
 const ProtectedRoute = ({ children }) => {
   const { user } = useAuth();
@@ -23,6 +24,13 @@ const AdminRoute = ({ children }) => {
   const { user } = useAuth();
   if (!user) return <Navigate to="/login" replace />;
   if (user.role !== 'admin') return <Navigate to="/dashboard" replace />;
+  return children;
+};
+
+const SuperAdminRoute = ({ children }) => {
+  const { user } = useAuth();
+  if (!user) return <Navigate to="/login" replace />;
+  if (user.role !== 'superadmin') return <Navigate to="/dashboard" replace />;
   return children;
 };
 
@@ -37,6 +45,7 @@ const GuestRoute = ({ children }) => {
   const { user } = useAuth();
   if (user) {
     if (user.role === 'admin') return <Navigate to="/admin" replace />;
+    if (user.role === 'superadmin') return <Navigate to="/central-dashboard" replace />;
     if (user.role === 'worker') return <Navigate to="/worker" replace />;
     return <Navigate to="/dashboard" replace />;
   }
@@ -53,6 +62,7 @@ function AppRoutes() {
       <Route path="/report"    element={<ProtectedRoute><ReportPage /></ProtectedRoute>} />
       <Route path="/authorities" element={<AuthoritiesPage />} />
       <Route path="/admin"     element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+      <Route path="/central-dashboard" element={<SuperAdminRoute><CentralDashboard /></SuperAdminRoute>} />
       <Route path="/worker"    element={<WorkerRoute><WorkerDashboard /></WorkerRoute>} />
       <Route path="*"          element={<Navigate to="/login" replace />} />
     </Routes>
