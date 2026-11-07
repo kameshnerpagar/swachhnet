@@ -1,0 +1,40 @@
+graph TD
+    subgraph Clients["Clients"]
+        Citizen["Citizen Web Client"]
+        Admin["Ward Admin Portal"]
+        Worker["Sanitation Worker View"]
+        Super["Central Superadmin"]
+    end
+
+    subgraph VPC["Amazon VPC (10.0.0.0/16) - ap-south-1"]
+        IGW["Internet Gateway"]
+        
+        subgraph PublicSubnet["Public Subnet (10.0.1.0/24)"]
+            EC2["Amazon EC2 (t3.micro - 65.2.180.175)<br/>Nginx + Express API"]
+        end
+        
+        subgraph PrivateSubnet["Private DB Subnets (10.0.10.0/24, 10.0.11.0/24)"]
+            RDS["Amazon RDS PostgreSQL 16.10<br/>Port 5432 Isolated"]
+        end
+    end
+
+    subgraph AWS_Managed["AWS Managed Services"]
+        S3["Amazon S3 Evidence Bucket<br/>(Private, AES-256)"]
+        SQS["Amazon SQS Queue + DLQ"]
+        SSM["AWS SSM Parameter Store"]
+        CW["Amazon CloudWatch Logs & Alarms"]
+        Budget["AWS Budgets ($10 Limit)"]
+    end
+
+    subgraph External["External AI"]
+        Gemini["Google Gemini Flash AI"]
+    end
+
+    Clients -->|HTTP/HTTPS 80/443| IGW
+    IGW --> EC2
+    EC2 -->|TCP 5432 Private| RDS
+    EC2 -->|SDK Presigned URLs| S3
+    EC2 -->|Async Jobs| SQS
+    EC2 -->|Fetch Credentials| SSM
+    EC2 -->|Stream Logs & Metrics| CW
+    EC2 -->|Validate Garbage Photos| Gemini

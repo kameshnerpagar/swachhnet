@@ -1,0 +1,101 @@
+<svg width="1050" height="650" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Helvetica, Arial, sans-serif">
+  <rect width="1050" height="650" fill="#f8fafc" rx="10"/>
+  <rect x="25" y="15" width="1000" height="45" rx="6" fill="#1e293b"/>
+  <text x="40" y="44" fill="#ffffff" font-size="18" font-weight="bold">Figure 4.4: Relational PostgreSQL Database Entity-Relationship Diagram (ERD)</text>
+
+  <!-- Table 1: users -->
+  <g transform="translate(40, 80)">
+    <rect width="260" height="230" rx="6" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+    <rect width="260" height="35" rx="6" fill="#2563eb"/>
+    <text x="15" y="24" fill="#ffffff" font-size="14" font-weight="bold">users (Table)</text>
+    <text x="15" y="55" font-size="11" font-weight="bold" fill="#b91c1c">PK  id : UUID (DEFAULT gen_random_uuid())</text>
+    <text x="15" y="75" font-size="11" fill="#334155">    name : VARCHAR(255) NOT NULL</text>
+    <text x="15" y="95" font-size="11" fill="#334155">    email : VARCHAR(255) UNIQUE NOT NULL</text>
+    <text x="15" y="115" font-size="11" fill="#334155">    password : VARCHAR(255) (Bcrypt)</text>
+    <text x="15" y="135" font-size="11" fill="#334155">    role : VARCHAR(32) CHECK IN</text>
+    <text x="25" y="152" font-size="10" fill="#64748b">('user','admin','worker','superadmin')</text>
+    <text x="15" y="172" font-size="11" fill="#334155">    created_at : TIMESTAMPTZ</text>
+    <text x="15" y="192" font-size="11" fill="#334155">    updated_at : TIMESTAMPTZ</text>
+    <text x="15" y="215" font-size="10" fill="#15803d">Indexes: idx_users_email, idx_users_role</text>
+  </g>
+
+  <!-- Table 2: ward_authorities -->
+  <g transform="translate(40, 360)">
+    <rect width="260" height="230" rx="6" fill="#ffffff" stroke="#059669" stroke-width="2"/>
+    <rect width="260" height="35" rx="6" fill="#059669"/>
+    <text x="15" y="24" fill="#ffffff" font-size="14" font-weight="bold">ward_authorities (Table)</text>
+    <text x="15" y="55" font-size="11" font-weight="bold" fill="#b91c1c">PK,FK user_id : UUID → users(id)</text>
+    <text x="15" y="75" font-size="11" fill="#334155">    name : VARCHAR(255) NOT NULL</text>
+    <text x="15" y="95" font-size="11" fill="#334155">    address : TEXT</text>
+    <text x="15" y="115" font-size="11" fill="#334155">    latitude : DOUBLE PRECISION</text>
+    <text x="15" y="135" font-size="11" fill="#334155">    longitude : DOUBLE PRECISION</text>
+    <text x="15" y="155" font-size="11" fill="#334155">    rating_score : NUMERIC(3,2)</text>
+    <text x="15" y="175" font-size="11" fill="#334155">    rating_count : INT DEFAULT 0</text>
+    <text x="15" y="210" font-size="10" fill="#64748b">8 Official BMC Wards Seeded</text>
+  </g>
+
+  <!-- Table 3: complaints -->
+  <g transform="translate(390, 80)">
+    <rect width="320" height="420" rx="6" fill="#ffffff" stroke="#ea580c" stroke-width="2"/>
+    <rect width="320" height="35" rx="6" fill="#ea580c"/>
+    <text x="15" y="24" fill="#ffffff" font-size="14" font-weight="bold">complaints (Core Transaction Table)</text>
+    <text x="15" y="55" font-size="11" font-weight="bold" fill="#b91c1c">PK  id : UUID (DEFAULT gen_random_uuid())</text>
+    <text x="15" y="75" font-size="11" font-weight="bold" fill="#2563eb">FK  user_id : UUID → users(id)</text>
+    <text x="15" y="95" font-size="11" fill="#334155">    user_name : VARCHAR(255)</text>
+    <text x="15" y="115" font-size="11" font-weight="bold" fill="#2563eb">FK  authority_id : UUID → users(id)</text>
+    <text x="15" y="135" font-size="11" font-weight="bold" fill="#2563eb">FK  worker_id : UUID (Nullable) → users(id)</text>
+    <text x="15" y="155" font-size="11" fill="#334155">    s3_key : VARCHAR(512) NOT NULL</text>
+    <text x="15" y="175" font-size="11" fill="#334155">    image_url : TEXT (Presigned)</text>
+    <text x="15" y="195" font-size="11" fill="#334155">    after_s3_key : VARCHAR(512)</text>
+    <text x="15" y="215" font-size="11" fill="#334155">    after_image_url : TEXT (Presigned)</text>
+    <text x="15" y="235" font-size="11" fill="#334155">    latitude : DOUBLE PRECISION NOT NULL</text>
+    <text x="15" y="255" font-size="11" fill="#334155">    longitude : DOUBLE PRECISION NOT NULL</text>
+    <text x="15" y="275" font-size="11" fill="#334155">    address : TEXT</text>
+    <text x="15" y="295" font-size="11" fill="#334155">    status : VARCHAR(32) CHECK IN</text>
+    <text x="25" y="310" font-size="10" fill="#64748b">('open','assigned','pending_verification','resolved','rejected')</text>
+    <text x="15" y="330" font-size="11" fill="#334155">    description : TEXT</text>
+    <text x="15" y="350" font-size="11" fill="#334155">    rating : INT (1 to 5)</text>
+    <text x="15" y="370" font-size="11" fill="#334155">    created_at : TIMESTAMPTZ DEFAULT NOW()</text>
+    <text x="15" y="390" font-size="11" fill="#334155">    updated_at : TIMESTAMPTZ DEFAULT NOW()</text>
+    <text x="15" y="410" font-size="10" fill="#15803d">Indexes: user, authority, worker, status, created_at</text>
+  </g>
+
+  <!-- Table 4: workers -->
+  <g transform="translate(750, 80)">
+    <rect width="260" height="220" rx="6" fill="#ffffff" stroke="#7c3aed" stroke-width="2"/>
+    <rect width="260" height="35" rx="6" fill="#7c3aed"/>
+    <text x="15" y="24" fill="#ffffff" font-size="14" font-weight="bold">workers (Truck Fleet Table)</text>
+    <text x="15" y="55" font-size="11" font-weight="bold" fill="#b91c1c">PK,FK user_id : UUID → users(id)</text>
+    <text x="15" y="75" font-size="11" fill="#334155">    truck_number : VARCHAR(64) NOT NULL</text>
+    <text x="15" y="95" font-size="11" font-weight="bold" fill="#2563eb">FK  assigned_ward_id : UUID → users(id)</text>
+    <text x="15" y="115" font-size="11" fill="#334155">    latitude : DOUBLE PRECISION</text>
+    <text x="15" y="135" font-size="11" fill="#334155">    longitude : DOUBLE PRECISION</text>
+    <text x="15" y="155" font-size="11" fill="#334155">    status : VARCHAR(32) ('idle','busy')</text>
+    <text x="15" y="195" font-size="10" fill="#15803d">Index: idx_workers_ward_status</text>
+    <text x="15" y="210" font-size="10" fill="#64748b">32 Trucks Seeded across Mumbai</text>
+  </g>
+
+  <!-- Table 5: complaint_transfers -->
+  <g transform="translate(390, 520)">
+    <rect width="320" height="110" rx="6" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    <rect width="320" height="30" rx="6" fill="#64748b"/>
+    <text x="15" y="21" fill="#ffffff" font-size="13" font-weight="bold">complaint_transfers (Audit Log)</text>
+    <text x="15" y="48" font-size="11" font-weight="bold" fill="#b91c1c">PK  id : BIGSERIAL</text>
+    <text x="15" y="65" font-size="11" font-weight="bold" fill="#2563eb">FK  complaint_id : UUID → complaints(id)</text>
+    <text x="15" y="82" font-size="11" fill="#334155">    from_authority_name / to_authority_name</text>
+    <text x="15" y="98" font-size="11" fill="#334155">    timestamp : TIMESTAMPTZ DEFAULT NOW()</text>
+  </g>
+
+  <!-- Relationship Lines -->
+  <line x1="300" y1="140" x2="390" y2="140" stroke="#2563eb" stroke-width="2"/>
+  <circle cx="390" cy="140" r="4" fill="#2563eb"/>
+  
+  <line x1="170" y1="310" x2="170" y2="360" stroke="#059669" stroke-width="2"/>
+  <circle cx="170" cy="360" r="4" fill="#059669"/>
+
+  <line x1="710" y1="160" x2="750" y2="160" stroke="#7c3aed" stroke-width="2"/>
+  <circle cx="710" cy="160" r="4" fill="#7c3aed"/>
+
+  <line x1="550" y1="500" x2="550" y2="520" stroke="#64748b" stroke-width="2"/>
+  <circle cx="550" cy="520" r="4" fill="#64748b"/>
+</svg>

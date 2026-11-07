@@ -1,0 +1,62 @@
+<svg width="900" height="500" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="tdArr" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#c2410c"/>
+    </marker>
+  </defs>
+
+  <rect width="900" height="500" fill="#f8fafc" rx="10"/>
+  <rect x="25" y="15" width="850" height="45" rx="6" fill="#1e293b"/>
+  <text x="40" y="44" fill="#ffffff" font-size="18" font-weight="bold">Figure 4.9: Geospatial Haversine Nearest Truck Dispatch Workflow</text>
+
+  <g transform="translate(40, 90)">
+    <rect width="230" height="90" rx="6" fill="#fff7ed" stroke="#f97316" stroke-width="1.8"/>
+    <text x="15" y="25" font-size="13" font-weight="bold" fill="#c2410c">1. Admin Opens Ward Portal</text>
+    <text x="15" y="48" font-size="11" fill="#334155">• Receives open complaint</text>
+    <text x="15" y="65" font-size="11" fill="#334155">• Coordinates: (lat, lng)</text>
+    <text x="15" y="80" font-size="11" fill="#334155">• Clicks "Dispatch Nearest"</text>
+  </g>
+
+  <g transform="translate(330, 90)">
+    <rect width="280" height="90" rx="6" fill="#ffedd5" stroke="#ea580c" stroke-width="1.8"/>
+    <text x="15" y="25" font-size="13" font-weight="bold" fill="#7c2d12">2. Haversine SQL Execution</text>
+    <text x="10" y="45" font-size="10" font-family="'Courier New', monospace" fill="#431407">SELECT w.user_id, w.truck_number,</text>
+    <text x="10" y="60" font-size="10" font-family="'Courier New', monospace" fill="#431407">6371 * acos(...) AS distance_km</text>
+    <text x="10" y="75" font-size="10" font-family="'Courier New', monospace" fill="#431407">FROM workers w WHERE status='idle'</text>
+  </g>
+
+  <g transform="translate(670, 90)">
+    <polygon points="80,0 160,45 80,90 0,45" fill="#fef2f2" stroke="#ef4444" stroke-width="1.8"/>
+    <text x="40" y="42" font-size="11" font-weight="bold" fill="#991b1b">Idle Truck</text>
+    <text x="35" y="58" font-size="11" font-weight="bold" fill="#991b1b">Available?</text>
+  </g>
+
+  <g transform="translate(670, 240)">
+    <rect width="180" height="70" rx="6" fill="#fee2e2" stroke="#fca5a5" stroke-width="1.5"/>
+    <text x="15" y="25" font-size="12" font-weight="bold" fill="#991b1b">Fleet Busy Notice</text>
+    <text x="15" y="45" font-size="11" fill="#7f1d1d">• Admin can queue job</text>
+    <text x="15" y="60" font-size="11" fill="#7f1d1d">• Or transfer to adj. ward</text>
+  </g>
+
+  <g transform="translate(40, 240)">
+    <rect width="570" height="180" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.8"/>
+    <text x="20" y="30" font-size="14" font-weight="bold" fill="#15803d">3. Automated Atomic State Assignment</text>
+    
+    <rect x="20" y="45" width="530" height="50" rx="4" fill="#ffffff" stroke="#86efac"/>
+    <text x="35" y="68" font-size="12" font-weight="bold" fill="#166534">A. PostgreSQL Transaction</text>
+    <text x="35" y="85" font-size="11" fill="#475569">UPDATE complaints SET status='assigned', worker_id=X; UPDATE workers SET status='busy'</text>
+
+    <rect x="20" y="105" width="530" height="50" rx="4" fill="#ffffff" stroke="#86efac"/>
+    <text x="35" y="128" font-size="12" font-weight="bold" fill="#166534">B. Driver Notification &amp; Map Pin</text>
+    <text x="35" y="145" font-size="11" fill="#475569">Assigned task appears on Driver Portal with turn-by-turn coordinate route</text>
+  </g>
+
+  <path d="M 270 135 L 330 135" fill="none" stroke="#c2410c" stroke-width="2" marker-end="url(#tdArr)"/>
+  <path d="M 610 135 L 670 135" fill="none" stroke="#c2410c" stroke-width="2" marker-end="url(#tdArr)"/>
+
+  <path d="M 750 180 L 750 240" fill="none" stroke="#ef4444" stroke-width="2" marker-end="url(#tdArr)"/>
+  <text x="760" y="210" font-size="11" font-weight="bold" fill="#ef4444">No</text>
+
+  <path d="M 670 135 L 630 135 L 630 240 L 610 240" fill="none" stroke="#16a34a" stroke-width="2.5" marker-end="url(#tdArr)"/>
+  <text x="635" y="190" font-size="11" font-weight="bold" fill="#16a34a">Yes</text>
+</svg>

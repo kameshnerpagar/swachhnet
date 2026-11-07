@@ -1,0 +1,76 @@
+<svg width="1050" height="650" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="dfd1Arr" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#2563eb"/>
+    </marker>
+  </defs>
+
+  <rect width="1050" height="650" fill="#f8fafc" rx="10"/>
+  <rect x="25" y="15" width="1000" height="45" rx="6" fill="#1e293b"/>
+  <text x="40" y="44" fill="#ffffff" font-size="18" font-weight="bold">Figure 4.7: Level 1 Data Flow Diagram (DFD) - Decomposed Subsystems</text>
+
+  <!-- Process 1.0 Auth -->
+  <circle cx="180" cy="150" r="60" fill="#eff6ff" stroke="#3b82f6" stroke-width="2.5"/>
+  <text x="165" y="145" font-size="13" font-weight="bold" fill="#1e40af">1.0</text>
+  <text x="135" y="165" font-size="12" fill="#1e40af">Auth &amp; RBAC</text>
+
+  <!-- Process 2.0 Ingestion & AI -->
+  <circle cx="480" cy="150" r="60" fill="#f0fdf4" stroke="#22c55e" stroke-width="2.5"/>
+  <text x="465" y="145" font-size="13" font-weight="bold" fill="#15803d">2.0</text>
+  <text x="430" y="165" font-size="12" fill="#15803d">Ingestion &amp; AI</text>
+
+  <!-- Process 3.0 Dispatch & Haversine -->
+  <circle cx="780" cy="150" r="60" fill="#fff7ed" stroke="#f97316" stroke-width="2.5"/>
+  <text x="765" y="145" font-size="13" font-weight="bold" fill="#c2410c">3.0</text>
+  <text x="735" y="165" font-size="12" fill="#c2410c">Dispatch Engine</text>
+
+  <!-- Process 4.0 Cleanup Verification -->
+  <circle cx="330" cy="400" r="60" fill="#faf5ff" stroke="#a855f7" stroke-width="2.5"/>
+  <text x="315" y="395" font-size="13" font-weight="bold" fill="#6b21a8">4.0</text>
+  <text x="280" y="415" font-size="12" fill="#6b21a8">Verification &amp; Pts</text>
+
+  <!-- Process 5.0 SLA & Audit -->
+  <circle cx="680" cy="400" r="60" fill="#fef2f2" stroke="#ef4444" stroke-width="2.5"/>
+  <text x="665" y="395" font-size="13" font-weight="bold" fill="#b91c1c">5.0</text>
+  <text x="635" y="415" font-size="12" fill="#b91c1c">SLA &amp; Monitoring</text>
+
+  <!-- Data Stores -->
+  <!-- D1: Users -->
+  <g transform="translate(80, 290)">
+    <line x1="0" y1="0" x2="160" y2="0" stroke="#0f172a" stroke-width="2"/>
+    <line x1="0" y1="35" x2="160" y2="35" stroke="#0f172a" stroke-width="2"/>
+    <text x="15" y="23" font-size="12" font-weight="bold" fill="#0f172a">D1: RDS Users Table</text>
+  </g>
+
+  <!-- D2: Complaints -->
+  <g transform="translate(430, 290)">
+    <line x1="0" y1="0" x2="190" y2="0" stroke="#0f172a" stroke-width="2"/>
+    <line x1="0" y1="35" x2="190" y2="35" stroke="#0f172a" stroke-width="2"/>
+    <text x="15" y="23" font-size="12" font-weight="bold" fill="#0f172a">D2: RDS Complaints Table</text>
+  </g>
+
+  <!-- D3: S3 Bucket -->
+  <g transform="translate(430, 50)">
+    <line x1="0" y1="0" x2="190" y2="0" stroke="#0f172a" stroke-width="2"/>
+    <line x1="0" y1="35" x2="190" y2="35" stroke="#0f172a" stroke-width="2"/>
+    <text x="15" y="23" font-size="12" font-weight="bold" fill="#0f172a">D3: Amazon S3 Evidence</text>
+  </g>
+
+  <!-- D4: CloudWatch Logs -->
+  <g transform="translate(620, 520)">
+    <line x1="0" y1="0" x2="220" y2="0" stroke="#0f172a" stroke-width="2"/>
+    <line x1="0" y1="35" x2="220" y2="35" stroke="#0f172a" stroke-width="2"/>
+    <text x="15" y="23" font-size="12" font-weight="bold" fill="#0f172a">D4: CloudWatch Log Streams</text>
+  </g>
+
+  <!-- Flows -->
+  <path d="M 180 210 L 160 290" fill="none" stroke="#2563eb" stroke-width="1.5" marker-end="url(#dfd1Arr)"/>
+  <path d="M 240 150 L 420 150" fill="none" stroke="#2563eb" stroke-width="1.5" marker-end="url(#dfd1Arr)"/>
+  <path d="M 480 210 L 480 290" fill="none" stroke="#2563eb" stroke-width="1.5" marker-end="url(#dfd1Arr)"/>
+  <path d="M 480 90 L 480 85" fill="none" stroke="#2563eb" stroke-width="1.5" marker-end="url(#dfd1Arr)"/>
+  <path d="M 540 150 L 720 150" fill="none" stroke="#2563eb" stroke-width="1.5" marker-end="url(#dfd1Arr)"/>
+  <path d="M 780 210 L 600 295" fill="none" stroke="#2563eb" stroke-width="1.5" marker-end="url(#dfd1Arr)"/>
+  <path d="M 500 325 L 390 380" fill="none" stroke="#2563eb" stroke-width="1.5" marker-end="url(#dfd1Arr)"/>
+  <path d="M 680 340 L 590 325" fill="none" stroke="#2563eb" stroke-width="1.5" marker-end="url(#dfd1Arr)"/>
+  <path d="M 680 460 L 680 520" fill="none" stroke="#2563eb" stroke-width="1.5" marker-end="url(#dfd1Arr)"/>
+</svg>

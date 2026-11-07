@@ -1,0 +1,124 @@
+<svg width="950" height="650" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Helvetica, Arial, sans-serif">
+  <rect width="950" height="650" fill="#f8fafc" rx="10"/>
+  <rect x="25" y="15" width="900" height="45" rx="6" fill="#1e293b"/>
+  <text x="40" y="44" fill="#ffffff" font-size="18" font-weight="bold">Figure 4.5: UML Use Case Diagram for SwachhNet Municipal Roles</text>
+
+  <!-- System Boundary -->
+  <rect x="200" y="80" width="550" height="540" rx="10" fill="#ffffff" stroke="#0284c7" stroke-width="2"/>
+  <text x="380" y="105" font-size="16" font-weight="bold" fill="#0369a1">SwachhNet Municipal System</text>
+
+  <!-- Left Actor: Citizen -->
+  <g transform="translate(60, 160)">
+    <circle cx="30" cy="20" r="15" fill="#3b82f6"/>
+    <line x1="30" y1="35" x2="30" y2="70" stroke="#3b82f6" stroke-width="3"/>
+    <line x1="10" y1="50" x2="50" y2="50" stroke="#3b82f6" stroke-width="3"/>
+    <line x1="30" y1="70" x2="15" y2="100" stroke="#3b82f6" stroke-width="3"/>
+    <line x1="30" y1="70" x2="45" y2="100" stroke="#3b82f6" stroke-width="3"/>
+    <text x="10" y="125" font-size="13" font-weight="bold" fill="#1e40af">Citizen</text>
+  </g>
+
+  <!-- Left Actor: Sanitation Worker -->
+  <g transform="translate(60, 420)">
+    <circle cx="30" cy="20" r="15" fill="#eab308"/>
+    <line x1="30" y1="35" x2="30" y2="70" stroke="#eab308" stroke-width="3"/>
+    <line x1="10" y1="50" x2="50" y2="50" stroke="#eab308" stroke-width="3"/>
+    <line x1="30" y1="70" x2="15" y2="100" stroke="#eab308" stroke-width="3"/>
+    <line x1="30" y1="70" x2="45" y2="100" stroke="#eab308" stroke-width="3"/>
+    <text x="-5" y="125" font-size="13" font-weight="bold" fill="#854d0e">Sanitation Worker</text>
+  </g>
+
+  <!-- Right Actor: Ward Admin -->
+  <g transform="translate(820, 160)">
+    <circle cx="30" cy="20" r="15" fill="#10b981"/>
+    <line x1="30" y1="35" x2="30" y2="70" stroke="#10b981" stroke-width="3"/>
+    <line x1="10" y1="50" x2="50" y2="50" stroke="#10b981" stroke-width="3"/>
+    <line x1="30" y1="70" x2="15" y2="100" stroke="#10b981" stroke-width="3"/>
+    <line x1="30" y1="70" x2="45" y2="100" stroke="#10b981" stroke-width="3"/>
+    <text x="-5" y="125" font-size="13" font-weight="bold" fill="#065f46">Ward Admin</text>
+  </g>
+
+  <!-- Right Actor: Central Superadmin -->
+  <g transform="translate(820, 420)">
+    <circle cx="30" cy="20" r="15" fill="#8b5cf6"/>
+    <line x1="30" y1="35" x2="30" y2="70" stroke="#8b5cf6" stroke-width="3"/>
+    <line x1="10" y1="50" x2="50" y2="50" stroke="#8b5cf6" stroke-width="3"/>
+    <line x1="30" y1="70" x2="15" y2="100" stroke="#8b5cf6" stroke-width="3"/>
+    <line x1="30" y1="70" x2="45" y2="100" stroke="#8b5cf6" stroke-width="3"/>
+    <text x="-15" y="125" font-size="13" font-weight="bold" fill="#5b21b6">Central Superadmin</text>
+  </g>
+
+  <!-- Use Cases (Ovals) -->
+  <g transform="translate(240, 130)">
+    <ellipse cx="110" cy="22" rx="100" ry="20" fill="#f0f9ff" stroke="#0284c7"/>
+    <text x="35" y="27" font-size="12" fill="#0369a1">UC1: Register &amp; Login</text>
+  </g>
+  <g transform="translate(240, 185)">
+    <ellipse cx="110" cy="22" rx="105" ry="20" fill="#f0f9ff" stroke="#0284c7"/>
+    <text x="25" y="27" font-size="12" fill="#0369a1">UC2: Report Garbage (GPS &amp; S3)</text>
+  </g>
+  <g transform="translate(240, 240)">
+    <ellipse cx="110" cy="22" rx="100" ry="20" fill="#f0f9ff" stroke="#0284c7"/>
+    <text x="25" y="27" font-size="12" fill="#0369a1">UC3: View Complaint Status</text>
+  </g>
+  <g transform="translate(240, 295)">
+    <ellipse cx="110" cy="22" rx="100" ry="20" fill="#f0f9ff" stroke="#0284c7"/>
+    <text x="20" y="27" font-size="12" fill="#0369a1">UC4: Earn Badges &amp; Give Rating</text>
+  </g>
+
+  <g transform="translate(500, 130)">
+    <ellipse cx="110" cy="22" rx="100" ry="20" fill="#ecfdf5" stroke="#10b981"/>
+    <text x="30" y="27" font-size="12" fill="#047857">UC5: View Ward Complaints</text>
+  </g>
+  <g transform="translate(500, 185)">
+    <ellipse cx="110" cy="22" rx="105" ry="20" fill="#ecfdf5" stroke="#10b981"/>
+    <text x="15" y="27" font-size="12" fill="#047857">UC6: Dispatch Nearest Truck</text>
+  </g>
+  <g transform="translate(500, 240)">
+    <ellipse cx="110" cy="22" rx="100" ry="20" fill="#ecfdf5" stroke="#10b981"/>
+    <text x="25" y="27" font-size="12" fill="#047857">UC7: Transfer Ward Boundary</text>
+  </g>
+
+  <g transform="translate(240, 390)">
+    <ellipse cx="110" cy="22" rx="100" ry="20" fill="#fefce8" stroke="#ca8a04"/>
+    <text x="35" y="27" font-size="12" fill="#854d0e">UC8: View Assigned Jobs</text>
+  </g>
+  <g transform="translate(240, 445)">
+    <ellipse cx="110" cy="22" rx="105" ry="20" fill="#fefce8" stroke="#ca8a04"/>
+    <text x="20" y="27" font-size="12" fill="#854d0e">UC9: Upload Cleanup Proof (S3)</text>
+  </g>
+  <g transform="translate(240, 500)">
+    <ellipse cx="110" cy="22" rx="100" ry="20" fill="#fefce8" stroke="#ca8a04"/>
+    <text x="25" y="27" font-size="12" fill="#854d0e">UC10: Update Truck Availability</text>
+  </g>
+
+  <g transform="translate(500, 390)">
+    <ellipse cx="110" cy="22" rx="100" ry="20" fill="#f5f3ff" stroke="#8b5cf6"/>
+    <text x="25" y="27" font-size="12" fill="#6d28d9">UC11: Monitor 48h SLA Breaches</text>
+  </g>
+  <g transform="translate(500, 445)">
+    <ellipse cx="110" cy="22" rx="105" ry="20" fill="#f5f3ff" stroke="#8b5cf6"/>
+    <text x="15" y="27" font-size="12" fill="#6d28d9">UC12: City-Wide Ward Analytics</text>
+  </g>
+  <g transform="translate(500, 500)">
+    <ellipse cx="110" cy="22" rx="100" ry="20" fill="#f5f3ff" stroke="#8b5cf6"/>
+    <text x="30" y="27" font-size="12" fill="#6d28d9">UC13: View CloudWatch Audit</text>
+  </g>
+
+  <!-- Connectors -->
+  <line x1="100" y1="210" x2="240" y2="152" stroke="#94a3b8" stroke-width="1.2"/>
+  <line x1="100" y1="210" x2="240" y2="207" stroke="#94a3b8" stroke-width="1.2"/>
+  <line x1="100" y1="210" x2="240" y2="262" stroke="#94a3b8" stroke-width="1.2"/>
+  <line x1="100" y1="210" x2="240" y2="317" stroke="#94a3b8" stroke-width="1.2"/>
+
+  <line x1="820" y1="210" x2="710" y2="152" stroke="#94a3b8" stroke-width="1.2"/>
+  <line x1="820" y1="210" x2="710" y2="207" stroke="#94a3b8" stroke-width="1.2"/>
+  <line x1="820" y1="210" x2="710" y2="262" stroke="#94a3b8" stroke-width="1.2"/>
+
+  <line x1="100" y1="470" x2="240" y2="412" stroke="#94a3b8" stroke-width="1.2"/>
+  <line x1="100" y1="470" x2="240" y2="467" stroke="#94a3b8" stroke-width="1.2"/>
+  <line x1="100" y1="470" x2="240" y2="522" stroke="#94a3b8" stroke-width="1.2"/>
+
+  <line x1="820" y1="470" x2="710" y2="412" stroke="#94a3b8" stroke-width="1.2"/>
+  <line x1="820" y1="470" x2="710" y2="467" stroke="#94a3b8" stroke-width="1.2"/>
+  <line x1="820" y1="470" x2="710" y2="522" stroke="#94a3b8" stroke-width="1.2"/>
+</svg>

@@ -1,0 +1,157 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >-
+  SwachhNet Cloud Architecture - 05 Compute and Monitoring
+  Provisions an Amazon EC2 instance hosting Express + Nginx, CloudWatch Log Group,
+  and CloudWatch CPU Utilization Alarm.
+
+Parameters:
+  EnvironmentName:
+    Type: String
+    Default: swachhnet
+    Description: Prefix used to name compute resources
+
+  PublicSubnetId:
+    Type: AWS::EC2::Subnet::Id
+    Description: Public Subnet ID for the EC2 Instance
+
+  AppSecurityGroupId:
+    Type: AWS::EC2::SecurityGroup::Id
+    Description: Application Security Group ID
+
+  EC2InstanceProfileName:
+    Type: String
+    Description: IAM Instance Profile Name for EC2
+
+  InstanceType:
+    Type: String
+    Default: t3.micro
+    AllowedValues:
+      - t3.micro
+      - t2.micro
+      - t3.small
+    Description: EC2 Instance Type (Free tier / economical student deployment)
+
+  LatestAmiId:
+    Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
+    Default: '/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-x86_64'
+    Description: Latest Amazon Linux 2023 AMI from SSM Parameter Store
+
+Resources:
+  # ── CloudWatch Log Group ─────────────────────────────────────────────────────
+  ApplicationLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub '/${EnvironmentName}/backend'
+      RetentionInDays: 7
+      Tags:
+        - Key: Name
+          Value: !Sub '${EnvironmentName}-app-logs'
+
+  # ── Amazon EC2 Application Server ───────────────────────────────────────────
+  EC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: !Ref InstanceType
+      ImageId: !Ref LatestAmiId
+      SubnetId: !Ref PublicSubnetId
+      SecurityGroupIds:
+        - !Ref AppSecurityGroupId
+      IamInstanceProfile: !Ref EC2InstanceProfileName
+      Tags:
+        - Key: Name
+          Value: !Sub '${EnvironmentName}-web-server'
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash -xe
+          exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
+          echo "🚀 Initializing SwachhNet Cloud Environment..."
+
+          # 1. Update OS packages
+          dnf update -y
+
+          # 2. Install Node.js 20, Git, and Nginx
+          dnf install -y nodejs git nginx
+          npm install -g pm2
+
+          # 3. Configure Nginx Reverse Proxy
+          cat << 'EOF' > /etc/nginx/conf.d/swachhnet.conf
+          server {
+              listen 80;
+              server_name _;
+
+              # Frontend Static Assets
+              location / {
+                  root /var/www/swachhnet/frontend/dist;
+                  index index.html;
+                  try_files $uri $uri/ /index.html;
+              }
+
+              # Backend REST API Reverse Proxy
+              location /api/ {
+                  proxy_pass http://127.0.0.1:5000/api/;
+                  proxy_http_version 1.1;
+                  proxy_set_header Upgrade $http_upgrade;
+                  proxy_set_header Connection 'upgrade';
+                  proxy_set_header Host $host;
+                  proxy_cache_bypass $http_upgrade;
+                  proxy_set_header X-Real-IP $remote_addr;
+                  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                  proxy_set_header X-Forwarded-Proto $scheme;
+              }
+
+              # Health Check
+              location /health {
+                  proxy_pass http://127.0.0.1:5000/health;
+              }
+          }
+          EOF
+
+          # Remove default Nginx welcome page
+          sed -i 's/default_server//g' /etc/nginx/nginx.conf
+
+          # 4. Start Nginx
+          systemctl enable nginx
+          systemctl start nginx
+
+          echo "✅ Nginx reverse proxy configured and active."
+
+  # ── CloudWatch CPU Utilization Alarm ─────────────────────────────────────────
+  HighCpuAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: !Sub '${EnvironmentName}-ec2-high-cpu-alarm'
+      AlarmDescription: Trigger alarm if EC2 CPU utilization exceeds 80% for 10 minutes
+      MetricName: CPUUtilization
+      Namespace: AWS/EC2
+      Statistic: Average
+      Period: 300 # 5 minutes
+      EvaluationPeriods: 2
+      Threshold: 80
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      Dimensions:
+        - Name: InstanceId
+          Value: !Ref EC2Instance
+
+Outputs:
+  InstanceId:
+    Description: EC2 Instance ID
+    Value: !Ref EC2Instance
+    Export:
+      Name: !Sub '${EnvironmentName}-InstanceId'
+
+  PublicIp:
+    Description: Public IP Address of the Web Server
+    Value: !GetAtt EC2Instance.PublicIp
+    Export:
+      Name: !Sub '${EnvironmentName}-PublicIp'
+
+  PublicDns:
+    Description: Public DNS Name of the Web Server
+    Value: !GetAtt EC2Instance.PublicDnsName
+    Export:
+      Name: !Sub '${EnvironmentName}-PublicDns'
+
+  WebsiteURL:
+    Description: URL to access the deployed SwachhNet application
+    Value: !Sub 'http://${EC2Instance.PublicIp}'
+

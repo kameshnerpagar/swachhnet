@@ -1,0 +1,12 @@
+graph TD
+    P1((1.0 Auth & RBAC)) <--> D1[(D1: RDS Users Table)]
+    P1 -->|JWT Claims| P2((2.0 Photo Ingestion & AI))
+    P2 -->|Save Photo Object| D3[(D3: Amazon S3 Evidence)]
+    P2 -->|Create Record| D2[(D2: RDS Complaints Table)]
+    P2 -->|Trigger Event| P3((3.0 Dispatch & Haversine))
+    P3 -->|Update Assigned Worker| D2
+    D2 -->|Fetch Task| P4((4.0 Cleanup Verification))
+    P4 -->|Verify Before/After| D3
+    P4 -->|Update Resolved| D2
+    D2 -->|Evaluate 48h Age| P5((5.0 SLA & Audit))
+    P5 -->|Push Events| D4[(D4: CloudWatch Logs)]

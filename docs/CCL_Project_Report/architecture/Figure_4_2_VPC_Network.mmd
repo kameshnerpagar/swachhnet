@@ -1,0 +1,26 @@
+graph TD
+    Internet((Public Internet)) -->|TCP 80/443| IGW[Internet Gateway]
+    
+    subgraph VPC [Custom VPC: swachhnet-vpc 10.0.0.0/16]
+        IGW -->|Route: 0.0.0.0/0| PublicSubnet
+        
+        subgraph PublicSubnet [Public Subnet: 10.0.1.0/24 - ap-south-1a]
+            subgraph AppSG [Security Group: swachhnet-app-sg]
+                EC2[EC2 Instance: 65.2.180.175<br/>Nginx + Node API]
+            end
+        end
+        
+        subgraph PrivateSubnets [Private DB Subnets: No Internet Route]
+            subgraph Subnet1 [Private Subnet 1: 10.0.10.0/24 - ap-south-1a]
+                subgraph DBSG [Security Group: swachhnet-db-sg]
+                    RDS[Amazon RDS PostgreSQL<br/>Port 5432 Encrypted]
+                end
+            end
+            
+            subgraph Subnet2 [Private Subnet 2: 10.0.11.0/24 - ap-south-1b]
+                Standby[RDS Standby Subnet<br/>Multi-AZ Compliance]
+            end
+        end
+    end
+    
+    EC2 -->|TCP 5432 Inbound Allowed| DBSG

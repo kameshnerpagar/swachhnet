@@ -1,0 +1,39 @@
+graph LR
+    Citizen((Citizen))
+    Worker((Sanitation Worker))
+    Admin((Ward Admin))
+    Super((Central Superadmin))
+
+    subgraph System [SwachhNet Municipal System]
+        UC1([UC1: Register & Login])
+        UC2([UC2: Report Garbage Photo & GPS])
+        UC3([UC3: Track Complaint Status])
+        UC4([UC4: Give Feedback & Earn Points])
+
+        UC5([UC5: View Ward Complaints])
+        UC6([UC6: Dispatch Nearest Truck])
+        UC7([UC7: Transfer Complaint Ward])
+
+        UC8([UC8: View Assigned Jobs])
+        UC9([UC9: Upload Cleanup Photo])
+        UC10([UC10: Update Truck Availability])
+
+        UC11([UC11: Monitor 48h SLA Breaches])
+        UC12([UC12: View City-wide Analytics])
+    end
+
+    Citizen --> UC1
+    Citizen --> UC2
+    Citizen --> UC3
+    Citizen --> UC4
+
+    Admin --> UC5
+    Admin --> UC6
+    Admin --> UC7
+
+    Worker --> UC8
+    Worker --> UC9
+    Worker --> UC10
+
+    Super --> UC11
+    Super --> UC12

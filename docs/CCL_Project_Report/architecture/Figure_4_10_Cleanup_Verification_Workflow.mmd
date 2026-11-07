@@ -1,0 +1,9 @@
+flowchart TD
+    A[Worker Completes Waste Removal at Site] --> B[Upload After Cleanup Photo via App]
+    B --> C[Private S3 Upload to cleanup/ Folder]
+    C --> D[Retrieve S3 Buffers for Before and After Photos]
+    D --> E{Google Gemini Vision: Compare Cleanliness?}
+    E -- Residual Waste Detected --> F[Rejection: Worker Must Re-clean and Re-submit]
+    E -- Site Verified Clean --> G[Mark Complaint Status 'resolved']
+    G --> H[Set Worker Status back to 'idle']
+    H --> I[Credit 10 Eco-Points & Badge to Citizen]

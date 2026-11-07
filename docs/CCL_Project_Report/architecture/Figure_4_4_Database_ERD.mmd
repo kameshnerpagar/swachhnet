@@ -1,0 +1,56 @@
+erDiagram
+    users ||--o| ward_authorities : "has profile"
+    users ||--o| workers : "has truck details"
+    users ||--o{ complaints : "files"
+    users ||--o{ complaints : "oversees as authority"
+    users ||--o{ complaints : "assigned as worker"
+    complaints ||--o{ complaint_transfers : "tracked in audit"
+
+    users {
+        UUID id PK
+        VARCHAR name
+        VARCHAR email UK
+        VARCHAR password
+        VARCHAR role
+        TIMESTAMPTZ created_at
+    }
+
+    ward_authorities {
+        UUID user_id PK,FK
+        VARCHAR name
+        TEXT address
+        DOUBLE latitude
+        DOUBLE longitude
+        NUMERIC rating_score
+    }
+
+    workers {
+        UUID user_id PK,FK
+        VARCHAR truck_number
+        UUID assigned_ward_id FK
+        DOUBLE latitude
+        DOUBLE longitude
+        VARCHAR status
+    }
+
+    complaints {
+        UUID id PK
+        UUID user_id FK
+        UUID authority_id FK
+        UUID worker_id FK
+        VARCHAR s3_key
+        VARCHAR after_s3_key
+        DOUBLE latitude
+        DOUBLE longitude
+        VARCHAR status
+        INT rating
+        TIMESTAMPTZ created_at
+    }
+
+    complaint_transfers {
+        BIGSERIAL id PK
+        UUID complaint_id FK
+        VARCHAR from_authority_name
+        VARCHAR to_authority_name
+        TIMESTAMPTZ timestamp
+    }

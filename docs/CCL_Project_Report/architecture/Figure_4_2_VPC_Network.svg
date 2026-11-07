@@ -1,0 +1,66 @@
+<svg width="1000" height="650" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Helvetica, Arial, sans-serif">
+  <defs>
+    <filter id="shadow2" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-color="#0f172a" flood-opacity="0.15"/>
+    </filter>
+    <marker id="arr2" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#1e40af"/>
+    </marker>
+  </defs>
+
+  <rect width="1000" height="650" fill="#f8fafc" rx="10"/>
+  <rect x="25" y="15" width="950" height="45" rx="6" fill="#1e293b"/>
+  <text x="40" y="44" fill="#ffffff" font-size="18" font-weight="bold">Figure 4.2: Amazon VPC Network &amp; Security Group Isolation Architecture</text>
+
+  <!-- VPC Outer Box -->
+  <rect x="40" y="80" width="920" height="540" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="2.5"/>
+  <text x="60" y="110" font-size="16" font-weight="bold" fill="#1e3a8a">Custom VPC: swachhnet-vpc (CIDR: 10.0.0.0/16)</text>
+
+  <!-- Internet Gateway -->
+  <rect x="380" y="125" width="240" height="40" rx="6" fill="#2563eb" filter="url(#shadow2)"/>
+  <text x="415" y="150" fill="#ffffff" font-size="14" font-weight="bold">Internet Gateway (IGW)</text>
+
+  <!-- Public Subnet Area -->
+  <rect x="65" y="180" width="870" height="190" rx="8" fill="#ffffff" stroke="#60a5fa" stroke-width="1.8"/>
+  <text x="85" y="205" font-size="14" font-weight="bold" fill="#1d4ed8">Public Subnet: swachhnet-public-subnet-1 (10.0.1.0/24) - Availability Zone: ap-south-1a</text>
+  <text x="85" y="223" font-size="12" fill="#475569">Associated Route Table: swachhnet-public-rt | Route Entry: 0.0.0.0/0 → swachhnet-igw</text>
+
+  <!-- Security Group App -->
+  <rect x="85" y="235" width="830" height="120" rx="6" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="100" y="258" font-size="13" font-weight="bold" fill="#15803d">Security Group: swachhnet-app-sg</text>
+  <text x="100" y="278" font-size="11" fill="#166534">Inbound Rules: TCP 80 (HTTP) from 0.0.0.0/0 | TCP 443 (HTTPS) from 0.0.0.0/0</text>
+  <text x="100" y="294" font-size="11" fill="#166534">Outbound Rules: All Traffic (0.0.0.0/0) to internet for Gemini AI &amp; AWS APIs</text>
+  <rect x="620" y="245" width="280" height="95" rx="4" fill="#ffffff" stroke="#86efac"/>
+  <text x="635" y="270" font-size="12" font-weight="bold" fill="#0f172a">Amazon EC2 Web Server</text>
+  <text x="635" y="290" font-size="11" fill="#334155">IP: 65.2.180.175 (Public) / 10.0.1.x</text>
+  <text x="635" y="308" font-size="11" fill="#334155">Nginx (80) → Node Express (5000)</text>
+  <text x="635" y="326" font-size="10" fill="#16a34a">Attached: swachhnet-unified-role</text>
+
+  <!-- Private Subnet Area -->
+  <rect x="65" y="390" width="870" height="215" rx="8" fill="#fff7ed" stroke="#f97316" stroke-width="1.8"/>
+  <text x="85" y="415" font-size="14" font-weight="bold" fill="#c2410c">Private Subnets: DB Subnet Group (Isolated - NO Internet Route Table Association)</text>
+  
+  <rect x="85" y="425" width="410" height="165" rx="6" fill="#ffffff" stroke="#fdba74"/>
+  <text x="100" y="445" font-size="12" font-weight="bold" fill="#9a3412">swachhnet-private-subnet-1 (10.0.10.0/24) [ap-south-1a]</text>
+  <text x="100" y="462" font-size="11" fill="#78716c">Security Group: swachhnet-db-sg</text>
+  <text x="100" y="478" font-size="10" fill="#dc2626">Inbound: TCP 5432 strictly from swachhnet-app-sg ONLY</text>
+  <text x="100" y="492" font-size="10" fill="#dc2626">Public Access: NO (0.0.0.0/0 Inbound Rejected)</text>
+  
+  <rect x="100" y="505" width="380" height="70" rx="4" fill="#ffedd5" stroke="#ea580c"/>
+  <text x="115" y="528" font-size="12" font-weight="bold" fill="#7c2d12">Amazon RDS PostgreSQL 16.10 Primary</text>
+  <text x="115" y="546" font-size="11" fill="#431407">Endpoint: swachhnet-postgres.cdc8mesu8z3p...</text>
+  <text x="115" y="562" font-size="10" fill="#15803d">Status: Available | Encrypted: AES-256 (gp2)</text>
+
+  <rect x="515" y="425" width="400" height="165" rx="6" fill="#ffffff" stroke="#cbd5e1"/>
+  <text x="530" y="445" font-size="12" font-weight="bold" fill="#475569">swachhnet-private-subnet-2 (10.0.11.0/24) [ap-south-1b]</text>
+  <text x="530" y="465" font-size="11" fill="#64748b">Route Table: swachhnet-private-rt (Local 10.0.0.0/16 only)</text>
+  <text x="530" y="510" font-size="12" fill="#94a3b8">Secondary AZ reservation for AWS RDS</text>
+  <text x="530" y="530" font-size="11" fill="#94a3b8">DB Subnet Group compliance (Min 2 AZs)</text>
+  <text x="530" y="550" font-size="11" fill="#94a3b8">Zero ongoing charges in Single-AZ mode</text>
+
+  <!-- Connectors -->
+  <path d="M 500 80 L 500 125" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arr2)"/>
+  <path d="M 500 165 L 500 235" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arr2)"/>
+  <path d="M 700 340 L 700 380 L 300 380 L 300 505" fill="none" stroke="#ea580c" stroke-width="2.5" marker-end="url(#arr2)"/>
+  <text x="310" y="375" font-size="11" font-weight="bold" fill="#ea580c">PostgreSQL Wire Protocol (5432)</text>
+</svg>

@@ -1,0 +1,11 @@
+flowchart TD
+    A[1. Citizen Captures Photo & GPS] --> B{2. Gemini AI Validates Garbage?}
+    B -- No (Spam/Selfie) --> B1[Reject Report with Error]
+    B -- Yes --> C[3. S3 Upload & SQS Job Enqueue]
+    C --> D[4. Auto-Assign Nearest Ward via Haversine SQL]
+    D --> E[5. Ward Admin Dispatches Nearest Idle Truck]
+    E --> F[6. Worker Cleans Site & Uploads After Photo]
+    F --> G{7. Gemini Compares Before vs After?}
+    G -- Not Cleaned --> F
+    G -- Verified Clean --> H[8. Mark Resolved & Award Citizen Points]
+    H --> I[9. Citizen Submits Rating & Feedback]

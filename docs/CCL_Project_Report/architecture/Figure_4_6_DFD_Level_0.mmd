@@ -1,0 +1,13 @@
+graph TD
+    Citizen[Citizen] -->|Report: Photo + GPS| System((0.0 SwachhNet Cloud Platform))
+    System -->|Status Updates & Badges| Citizen
+
+    System -->|Assigned Ward Complaints| Admin[Ward Administrator]
+    Admin -->|Truck Dispatch & Transfers| System
+
+    System -->|Dispatch Task & Navigation| Worker[Sanitation Worker]
+    Worker -->|Cleanup Proof & Status| System
+
+    System -->|City-wide Analytics & 48h SLA| Superadmin[Central Authority]
+
+    System <-->|Storage, DB & AI Verification| Cloud[AWS Cloud & Gemini AI]

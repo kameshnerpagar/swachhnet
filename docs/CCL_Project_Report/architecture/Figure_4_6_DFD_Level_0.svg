@@ -1,0 +1,66 @@
+<svg width="900" height="550" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="dfdArr" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#2563eb"/>
+    </marker>
+  </defs>
+
+  <rect width="900" height="550" fill="#f8fafc" rx="10"/>
+  <rect x="25" y="15" width="850" height="45" rx="6" fill="#1e293b"/>
+  <text x="40" y="44" fill="#ffffff" font-size="18" font-weight="bold">Figure 4.6: Level 0 Data Flow Diagram (Context Diagram)</text>
+
+  <!-- Central Process -->
+  <circle cx="450" cy="280" r="85" fill="#eff6ff" stroke="#2563eb" stroke-width="3"/>
+  <text x="415" y="265" font-size="14" font-weight="bold" fill="#1e40af">0.0</text>
+  <text x="390" y="285" font-size="14" font-weight="bold" fill="#1e40af">SwachhNet</text>
+  <text x="392" y="303" font-size="12" fill="#3b82f6">Cloud Platform</text>
+
+  <!-- Entity 1: Citizen (Top Left) -->
+  <rect x="60" y="100" width="160" height="60" rx="6" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+  <text x="110" y="135" font-size="14" font-weight="bold" fill="#0f172a">Citizen</text>
+
+  <!-- Entity 2: Ward Admin (Top Right) -->
+  <rect x="680" y="100" width="160" height="60" rx="6" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+  <text x="715" y="135" font-size="14" font-weight="bold" fill="#0f172a">Ward Admin</text>
+
+  <!-- Entity 3: Sanitation Worker (Bottom Left) -->
+  <rect x="60" y="400" width="160" height="60" rx="6" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+  <text x="80" y="435" font-size="13" font-weight="bold" fill="#0f172a">Sanitation Worker</text>
+
+  <!-- Entity 4: Central Superadmin (Bottom Right) -->
+  <rect x="680" y="400" width="160" height="60" rx="6" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+  <text x="700" y="435" font-size="13" font-weight="bold" fill="#0f172a">Central Authority</text>
+
+  <!-- Entity 5: AWS Services & Gemini AI (Bottom Center) -->
+  <rect x="350" y="460" width="200" height="50" rx="6" fill="#f8fafc" stroke="#94a3b8" stroke-dasharray="4,3"/>
+  <text x="365" y="490" font-size="12" fill="#64748b">AWS (RDS, S3, SQS) &amp; Gemini AI</text>
+
+  <!-- Flows -->
+  <!-- Citizen to System -->
+  <path d="M 220 120 L 375 235" fill="none" stroke="#2563eb" stroke-width="1.8" marker-end="url(#dfdArr)"/>
+  <text x="180" y="180" font-size="11" fill="#1e40af">Garbage Report (Photo + GPS)</text>
+
+  <path d="M 370 260 L 220 145" fill="none" stroke="#64748b" stroke-width="1.5" marker-end="url(#dfdArr)"/>
+  <text x="230" y="215" font-size="11" fill="#475569">Status &amp; Points</text>
+
+  <!-- System to Admin -->
+  <path d="M 525 235 L 680 120" fill="none" stroke="#2563eb" stroke-width="1.8" marker-end="url(#dfdArr)"/>
+  <text x="560" y="165" font-size="11" fill="#1e40af">Ward Complaints &amp; Breaches</text>
+
+  <path d="M 680 145 L 530 260" fill="none" stroke="#64748b" stroke-width="1.5" marker-end="url(#dfdArr)"/>
+  <text x="610" y="215" font-size="11" fill="#475569">Dispatch &amp; Transfer Orders</text>
+
+  <!-- System to Worker -->
+  <path d="M 375 325 L 220 410" fill="none" stroke="#2563eb" stroke-width="1.8" marker-end="url(#dfdArr)"/>
+  <text x="170" y="360" font-size="11" fill="#1e40af">Assigned Task Location</text>
+
+  <path d="M 220 435 L 375 345" fill="none" stroke="#64748b" stroke-width="1.5" marker-end="url(#dfdArr)"/>
+  <text x="210" y="405" font-size="11" fill="#475569">Cleanup Proof &amp; Status</text>
+
+  <!-- System to Central -->
+  <path d="M 525 325 L 680 410" fill="none" stroke="#2563eb" stroke-width="1.8" marker-end="url(#dfdArr)"/>
+  <text x="565" y="360" font-size="11" fill="#1e40af">SLA Breaches &amp; Ward KPIs</text>
+
+  <!-- System to External Cloud -->
+  <path d="M 450 365 L 450 460" fill="none" stroke="#64748b" stroke-width="1.5" marker-end="url(#dfdArr)"/>
+</svg>

@@ -1,0 +1,41 @@
+graph TD
+    subgraph Layer1 [1. Presentation Layer - React 18 SPA]
+        CitizenUI[Citizen Portal]
+        AdminUI[Ward Admin Portal]
+        WorkerUI[Sanitation Worker Portal]
+        SuperUI[Central Superadmin Dashboard]
+    end
+
+    subgraph Layer2 [2. Web Gateway Layer - Nginx on EC2]
+        NginxStatic[Static Files Server /var/www/swachhnet/frontend/dist]
+        NginxProxy[Reverse Proxy /api/ to 127.0.0.1:5000]
+    end
+
+    subgraph Layer3 [3. Business Logic Layer - Node.js Express & PM2]
+        AuthCtrl[Auth Controller & JWT Middleware]
+        ComplaintCtrl[Complaint Controller & S3 Multer]
+        AuthorityCtrl[Authority Controller & Haversine Dispatch]
+        CentralCtrl[Central Metrics & SLA 48h Monitor]
+    end
+
+    subgraph Layer4 [4. Cloud Persistence & External AI Layer]
+        RDS[(Amazon RDS PostgreSQL 16.10)]
+        S3[(Amazon S3 Evidence Bucket)]
+        SQS[Amazon SQS Jobs Queue & DLQ]
+        SSM[AWS SSM Parameter Store]
+        CW[Amazon CloudWatch Logs]
+        Gemini[Google Gemini Flash AI]
+    end
+
+    CitizenUI & AdminUI & WorkerUI & SuperUI --> NginxStatic
+    CitizenUI & AdminUI & WorkerUI & SuperUI --> NginxProxy
+    NginxProxy --> AuthCtrl & ComplaintCtrl & AuthorityCtrl & CentralCtrl
+    
+    AuthCtrl --> RDS
+    AuthCtrl --> SSM
+    ComplaintCtrl --> S3
+    ComplaintCtrl --> Gemini
+    ComplaintCtrl --> SQS
+    AuthorityCtrl --> RDS
+    CentralCtrl --> RDS
+    CentralCtrl --> CW

@@ -1,0 +1,105 @@
+<svg width="900" height="600" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Helvetica, Arial, sans-serif">
+  <rect width="900" height="600" fill="#f8fafc" rx="10"/>
+  <rect x="20" y="15" width="860" height="45" rx="6" fill="#1e293b"/>
+  <text x="35" y="44" fill="#ffffff" font-size="18" font-weight="bold">Figure 4.3: SwachhNet Multi-Tier Layered Software Architecture</text>
+
+  <!-- Layer 1: Presentation -->
+  <rect x="40" y="80" width="820" height="100" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.8"/>
+  <text x="60" y="105" font-size="14" font-weight="bold" fill="#1d4ed8">1. Presentation Layer (Client Tier - React 18 SPA)</text>
+  <g transform="translate(60, 115)">
+    <rect width="180" height="50" rx="4" fill="#ffffff" stroke="#93c5fd"/>
+    <text x="15" y="22" font-size="12" font-weight="bold" fill="#0f172a">Citizen Portal</text>
+    <text x="15" y="40" font-size="10" fill="#475569">Photo capture, GPS map</text>
+  </g>
+  <g transform="translate(260, 115)">
+    <rect width="180" height="50" rx="4" fill="#ffffff" stroke="#93c5fd"/>
+    <text x="15" y="22" font-size="12" font-weight="bold" fill="#0f172a">Ward Admin Portal</text>
+    <text x="15" y="40" font-size="10" fill="#475569">Dispatch &amp; Transfer tools</text>
+  </g>
+  <g transform="translate(460, 115)">
+    <rect width="180" height="50" rx="4" fill="#ffffff" stroke="#93c5fd"/>
+    <text x="15" y="22" font-size="12" font-weight="bold" fill="#0f172a">Worker Portal</text>
+    <text x="15" y="40" font-size="10" fill="#475569">Task view, cleanup proof</text>
+  </g>
+  <g transform="translate(660, 115)">
+    <rect width="180" height="50" rx="4" fill="#ffffff" stroke="#93c5fd"/>
+    <text x="15" y="22" font-size="12" font-weight="bold" fill="#0f172a">Central Superadmin</text>
+    <text x="15" y="40" font-size="10" fill="#475569">SLA analytics, 48h breaches</text>
+  </g>
+
+  <!-- Layer 2: Web Server & Gateway -->
+  <rect x="40" y="195" width="820" height="75" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.8"/>
+  <text x="60" y="220" font-size="14" font-weight="bold" fill="#15803d">2. Web Server &amp; Gateway Layer (Nginx Reverse Proxy on EC2)</text>
+  <text x="60" y="242" font-size="12" fill="#334155">Static Content: Serves bundled React SPA from /var/www/swachhnet/frontend/dist</text>
+  <text x="60" y="258" font-size="12" fill="#334155">API Routing: Proxies /api/* requests to internal Node.js backend on http://127.0.0.1:5000</text>
+
+  <!-- Layer 3: Application & Business Logic -->
+  <rect x="40" y="285" width="820" height="150" rx="8" fill="#fff7ed" stroke="#f97316" stroke-width="1.8"/>
+  <text x="60" y="310" font-size="14" font-weight="bold" fill="#c2410c">3. Application Business Logic Layer (Node.js &amp; Express.js / PM2)</text>
+  
+  <g transform="translate(60, 325)">
+    <rect width="180" height="95" rx="4" fill="#ffffff" stroke="#fdba74"/>
+    <text x="12" y="20" font-size="12" font-weight="bold" fill="#0f172a">Auth Controller</text>
+    <text x="12" y="38" font-size="10" fill="#475569">• User Registration</text>
+    <text x="12" y="52" font-size="10" fill="#475569">• Bcrypt Password Hash</text>
+    <text x="12" y="66" font-size="10" fill="#475569">• JWT Generation &amp; Role</text>
+    <text x="12" y="80" font-size="10" fill="#475569">• Dual-DB Fallback</text>
+  </g>
+  <g transform="translate(260, 325)">
+    <rect width="180" height="95" rx="4" fill="#ffffff" stroke="#fdba74"/>
+    <text x="12" y="20" font-size="12" font-weight="bold" fill="#0f172a">Complaint Controller</text>
+    <text x="12" y="38" font-size="10" fill="#475569">• Multer Memory Upload</text>
+    <text x="12" y="52" font-size="10" fill="#475569">• Gemini AI Spam Check</text>
+    <text x="12" y="66" font-size="10" fill="#475569">• S3 Direct Buffer Put</text>
+    <text x="12" y="80" font-size="10" fill="#475569">• SQS Async Enqueue</text>
+  </g>
+  <g transform="translate(460, 325)">
+    <rect width="180" height="95" rx="4" fill="#ffffff" stroke="#fdba74"/>
+    <text x="12" y="20" font-size="12" font-weight="bold" fill="#0f172a">Authority Controller</text>
+    <text x="12" y="38" font-size="10" fill="#475569">• Haversine Nearest Ward</text>
+    <text x="12" y="52" font-size="10" fill="#475569">• Nearest Idle Truck SQL</text>
+    <text x="12" y="66" font-size="10" fill="#475569">• Ward Transfers</text>
+    <text x="12" y="80" font-size="10" fill="#475569">• Status Transition</text>
+  </g>
+  <g transform="translate(660, 325)">
+    <rect width="180" height="95" rx="4" fill="#ffffff" stroke="#fdba74"/>
+    <text x="12" y="20" font-size="12" font-weight="bold" fill="#0f172a">Central &amp; SLA</text>
+    <text x="12" y="38" font-size="10" fill="#475569">• City-wide Metrics</text>
+    <text x="12" y="52" font-size="10" fill="#475569">• 48-Hour SLA Breach SQL</text>
+    <text x="12" y="66" font-size="10" fill="#475569">• CloudWatch Structured Log</text>
+    <text x="12" y="80" font-size="10" fill="#475569">• Leaderboard &amp; Badges</text>
+  </g>
+
+  <!-- Layer 4: Persistence & Cloud Services -->
+  <rect x="40" y="450" width="820" height="125" rx="8" fill="#faf5ff" stroke="#a855f7" stroke-width="1.8"/>
+  <text x="60" y="475" font-size="14" font-weight="bold" fill="#6b21a8">4. Persistence, Cloud Services &amp; AI Integration Layer</text>
+  
+  <g transform="translate(60, 485)">
+    <rect width="180" height="75" rx="4" fill="#ffffff" stroke="#d8b4fe"/>
+    <text x="12" y="20" font-size="12" font-weight="bold" fill="#0f172a">Amazon RDS</text>
+    <text x="12" y="38" font-size="10" fill="#475569">PostgreSQL 16.10 Database</text>
+    <text x="12" y="52" font-size="10" fill="#475569">Relational Schema &amp; FKs</text>
+    <text x="12" y="66" font-size="10" fill="#475569">Encrypted 20GB Storage</text>
+  </g>
+  <g transform="translate(260, 485)">
+    <rect width="180" height="75" rx="4" fill="#ffffff" stroke="#d8b4fe"/>
+    <text x="12" y="20" font-size="12" font-weight="bold" fill="#0f172a">Amazon S3 Storage</text>
+    <text x="12" y="38" font-size="10" fill="#475569">Private Evidence Bucket</text>
+    <text x="12" y="52" font-size="10" fill="#475569">Presigned Download URLs</text>
+    <text x="12" y="66" font-size="10" fill="#475569">Server-side AES-256</text>
+  </g>
+  <g transform="translate(460, 485)">
+    <rect width="180" height="75" rx="4" fill="#ffffff" stroke="#d8b4fe"/>
+    <text x="12" y="20" font-size="12" font-weight="bold" fill="#0f172a">Amazon SQS &amp; SSM</text>
+    <text x="12" y="38" font-size="10" fill="#475569">Job Queue + DLQ Buffer</text>
+    <text x="12" y="52" font-size="10" fill="#475569">SecureString Parameters</text>
+    <text x="12" y="66" font-size="10" fill="#475569">Zero Hardcoded Secrets</text>
+  </g>
+  <g transform="translate(660, 485)">
+    <rect width="180" height="75" rx="4" fill="#ffffff" stroke="#d8b4fe"/>
+    <text x="12" y="20" font-size="12" font-weight="bold" fill="#0f172a">Gemini AI &amp; Logs</text>
+    <text x="12" y="38" font-size="10" fill="#475569">Multimodal Vision Check</text>
+    <text x="12" y="52" font-size="10" fill="#475569">Before/After Comparison</text>
+    <text x="12" y="66" font-size="10" fill="#475569">CloudWatch Log Streams</text>
+  </g>
+</svg>

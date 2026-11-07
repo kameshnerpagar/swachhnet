@@ -1,9 +1,38 @@
+# Dependencies
 node_modules/
+package-lock.json
+
+# Environment variables & secrets (CRITICAL: Never commit .env)
 .env
-.env.*.local
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Build outputs & caches
+dist/
+build/
+*.pyc
+__pycache__/
+
+# Agent workspace files
 .gemini/
 brain/
 scratch/
 task.md
 implementation_plan.md
 walkthrough.md
+
+# Temporary lab test scripts
+run-ssm.ps1
+run_ssm.py
+ssm_params.json
+find_grader.json
+lab_cfn/
+cf-lab/
+lab-files/
+lab-*.yaml
+
+# OS metadata
+.DS_Store
+Thumbs.db

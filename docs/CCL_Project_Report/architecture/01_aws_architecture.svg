@@ -1,0 +1,160 @@
+<svg width="1100" height="750" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Helvetica, Arial, sans-serif">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#f1f5f9"/>
+    </linearGradient>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="2" dy="3" stdDeviation="3" flood-color="#0f172a" flood-opacity="0.1"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#2563eb"/>
+    </marker>
+    <marker id="arrow-green" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#16a34a"/>
+    </marker>
+    <marker id="arrow-orange" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#ea580c"/>
+    </marker>
+  </defs>
+
+  <!-- Canvas Background -->
+  <rect width="1100" height="750" fill="url(#bgGrad)" rx="12"/>
+
+  <!-- Title Block -->
+  <rect x="25" y="15" width="1050" height="50" rx="8" fill="#1e293b"/>
+  <text x="40" y="46" fill="#ffffff" font-size="20" font-weight="bold">Figure 4.1: SwachhNet - Comprehensive AWS Cloud Architecture</text>
+  <text x="820" y="46" fill="#94a3b8" font-size="13">Region: ap-south-1 (Mumbai)</text>
+
+  <!-- Users & Clients Layer -->
+  <rect x="40" y="80" width="1020" height="70" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="60" y="105" font-size="14" font-weight="bold" fill="#0f172a">Client Layer (Web Browsers / Mobile Clients)</text>
+  
+  <g transform="translate(60, 115)">
+    <rect width="180" height="26" rx="4" fill="#eff6ff" stroke="#93c5fd"/>
+    <text x="15" y="18" font-size="12" fill="#1e40af">Citizen (Report &amp; Track)</text>
+  </g>
+  <g transform="translate(260, 115)">
+    <rect width="190" height="26" rx="4" fill="#f0fdf4" stroke="#86efac"/>
+    <text x="15" y="18" font-size="12" fill="#166534">Ward Admin (Dispatch &amp; SLA)</text>
+  </g>
+  <g transform="translate(470, 115)">
+    <rect width="200" height="26" rx="4" fill="#fefce8" stroke="#fde047"/>
+    <text x="15" y="18" font-size="12" fill="#854d0e">Sanitation Worker (Cleanup)</text>
+  </g>
+  <g transform="translate(690, 115)">
+    <rect width="210" height="26" rx="4" fill="#faf5ff" stroke="#d8b4fe"/>
+    <text x="15" y="18" font-size="12" fill="#6b21a8">Central Superadmin (City Metrics)</text>
+  </g>
+
+  <!-- VPC Outer Box -->
+  <rect x="40" y="170" width="700" height="550" rx="10" fill="#f8fafc" stroke="#2563eb" stroke-width="2" stroke-dasharray="6,4"/>
+  <text x="60" y="195" font-size="15" font-weight="bold" fill="#1e40af">Amazon VPC (swachhnet-vpc) - CIDR: 10.0.0.0/16</text>
+
+  <!-- Internet Gateway -->
+  <rect x="300" y="210" width="180" height="35" rx="6" fill="#2563eb" filter="url(#shadow)"/>
+  <text x="325" y="233" font-size="13" font-weight="bold" fill="#ffffff">Internet Gateway (IGW)</text>
+
+  <!-- Public Subnet -->
+  <rect x="60" y="265" width="660" height="195" rx="8" fill="#eff6ff" stroke="#60a5fa" stroke-width="1.5"/>
+  <text x="80" y="290" font-size="13" font-weight="bold" fill="#1d4ed8">Public Subnet (10.0.1.0/24) - AZ: ap-south-1a [swachhnet-public-subnet-1]</text>
+  <text x="80" y="307" font-size="11" fill="#64748b">Route: 0.0.0.0/0 → Internet Gateway | Security Group: swachhnet-app-sg (Inbound: 80, 443)</text>
+
+  <!-- EC2 Instance Box -->
+  <rect x="80" y="320" width="620" height="125" rx="6" fill="#ffffff" stroke="#3b82f6" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="100" y="342" font-size="14" font-weight="bold" fill="#0f172a">Amazon EC2 (t3.micro - Amazon Linux 2023) - Elastic IP: 65.2.180.175</text>
+  <text x="100" y="358" font-size="11" fill="#475569">IAM Profile: swachhnet-unified-profile | Auto-restart via PM2 &amp; Systemd</text>
+
+  <!-- Inside EC2: Nginx + Express + Haversine -->
+  <g transform="translate(100, 370)">
+    <rect width="180" height="60" rx="4" fill="#f0fdf4" stroke="#4ade80"/>
+    <text x="15" y="22" font-size="12" font-weight="bold" fill="#15803d">Nginx 1.30 (Port 80/443)</text>
+    <text x="15" y="38" font-size="10" fill="#334155">Static Web Serving (React 18)</text>
+    <text x="15" y="50" font-size="10" fill="#334155">Reverse Proxy (/api/ → :5000)</text>
+  </g>
+  <g transform="translate(300, 370)">
+    <rect width="210" height="60" rx="4" fill="#f8fafc" stroke="#94a3b8"/>
+    <text x="15" y="22" font-size="12" font-weight="bold" fill="#0f172a">Node.js Express API (Port 5000)</text>
+    <text x="15" y="38" font-size="10" fill="#334155">JWT Auth &amp; Role-based Middleware</text>
+    <text x="15" y="50" font-size="10" fill="#334155">Controllers: Auth, Complaint, Admin</text>
+  </g>
+  <g transform="translate(530, 370)">
+    <rect width="150" height="60" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
+    <text x="10" y="22" font-size="12" font-weight="bold" fill="#b45309">Haversine SQL</text>
+    <text x="10" y="38" font-size="10" fill="#334155">Nearest Ward Search</text>
+    <text x="10" y="50" font-size="10" fill="#334155">Nearest Truck Dispatch</text>
+  </g>
+
+  <!-- Private Subnet Outer -->
+  <rect x="60" y="480" width="660" height="225" rx="8" fill="#fff7ed" stroke="#fb923c" stroke-width="1.5"/>
+  <text x="80" y="505" font-size="13" font-weight="bold" fill="#c2410c">Private DB Subnet Group (No Public Route, Isolated VPC Subnets)</text>
+  <text x="80" y="522" font-size="11" fill="#78716c">Security Group: swachhnet-db-sg | Strictly allows Port 5432 Inbound from swachhnet-app-sg ONLY</text>
+
+  <!-- Subnet 1 (Active) -->
+  <rect x="80" y="535" width="310" height="155" rx="6" fill="#ffffff" stroke="#f97316" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="95" y="557" font-size="13" font-weight="bold" fill="#9a3412">Private Subnet 1 (10.0.10.0/24) [ap-south-1a]</text>
+  <rect x="95" y="570" width="280" height="105" rx="4" fill="#ffedd5" stroke="#fdba74"/>
+  <text x="110" y="592" font-size="13" font-weight="bold" fill="#7c2d12">Amazon RDS for PostgreSQL 16.10</text>
+  <text x="110" y="610" font-size="11" fill="#431407">Endpoint: swachhnet-postgres.cdc8mesu8z3p...</text>
+  <text x="110" y="626" font-size="11" fill="#431407">Instance: db.t3.micro (20GB gp2 Encrypted)</text>
+  <text x="110" y="642" font-size="11" fill="#431407">Multi-AZ: False | Publicly Accessible: No</text>
+  <text x="110" y="658" font-size="10" fill="#15803d">Tables: users, complaints, workers, wards</text>
+
+  <!-- Subnet 2 (Standby / AZ requirement) -->
+  <rect x="410" y="535" width="290" height="155" rx="6" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="425" y="557" font-size="13" font-weight="bold" fill="#475569">Private Subnet 2 (10.0.11.0/24) [ap-south-1b]</text>
+  <rect x="425" y="570" width="260" height="105" rx="4" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="440" y="605" font-size="12" fill="#64748b">Required by RDS DB Subnet Group</text>
+  <text x="440" y="625" font-size="11" fill="#94a3b8">Multi-AZ failover target standby zone</text>
+  <text x="440" y="645" font-size="11" fill="#94a3b8">(Cost-optimized single-instance mode)</text>
+
+  <!-- AWS Managed Services Layer (Right Column) -->
+  <rect x="760" y="170" width="300" height="550" rx="10" fill="#f8fafc" stroke="#64748b" stroke-width="1.5"/>
+  <text x="780" y="195" font-size="15" font-weight="bold" fill="#0f172a">Managed Cloud Services &amp; AI</text>
+
+  <!-- Amazon S3 Box -->
+  <rect x="780" y="215" width="260" height="85" rx="6" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="795" y="238" font-size="13" font-weight="bold" fill="#15803d">Amazon S3 (Private Bucket)</text>
+  <text x="795" y="255" font-size="11" fill="#334155">swachhnet-evidence-078601217335-ap-south-1</text>
+  <text x="795" y="270" font-size="11" fill="#334155">AES-256 Server-Side Encryption (SSE-S3)</text>
+  <text x="795" y="285" font-size="11" fill="#166534">Presigned URLs (60-minute TTL expiry)</text>
+
+  <!-- Amazon SQS Box -->
+  <rect x="780" y="315" width="260" height="85" rx="6" fill="#faf5ff" stroke="#a855f7" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="795" y="338" font-size="13" font-weight="bold" fill="#6b21a8">Amazon SQS (Decoupled Queue)</text>
+  <text x="795" y="355" font-size="11" fill="#334155">swachhnet-jobs-queue (Async job buffer)</text>
+  <text x="795" y="370" font-size="11" fill="#334155">swachhnet-jobs-dlq (Dead Letter Queue)</text>
+  <text x="795" y="385" font-size="11" fill="#7e22ce">Long-polling consumer with 5-retry limit</text>
+
+  <!-- Systems Manager Parameter Store -->
+  <rect x="780" y="415" width="260" height="75" rx="6" fill="#fef2f2" stroke="#ef4444" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="795" y="438" font-size="13" font-weight="bold" fill="#b91c1c">AWS SSM Parameter Store</text>
+  <text x="795" y="455" font-size="11" fill="#334155">Path: /swachhnet/prod/*</text>
+  <text x="795" y="470" font-size="11" fill="#334155">SecureString for DB URI, JWT, Gemini API</text>
+
+  <!-- Amazon CloudWatch & Budgets -->
+  <rect x="780" y="505" width="260" height="95" rx="6" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="795" y="528" font-size="13" font-weight="bold" fill="#1d4ed8">CloudWatch &amp; AWS Budgets</text>
+  <text x="795" y="545" font-size="11" fill="#334155">Log Group: /swachhnet/backend</text>
+  <text x="795" y="560" font-size="11" fill="#334155">Alarm: swachhnet-ec2-high-cpu-alarm</text>
+  <text x="795" y="575" font-size="11" fill="#1e40af">AWS Budget: $10.00 / month limit</text>
+
+  <!-- Google Gemini AI -->
+  <rect x="780" y="615" width="260" height="85" rx="6" fill="#fdf4ff" stroke="#d946ef" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="795" y="638" font-size="13" font-weight="bold" fill="#a21caf">Google Gemini Flash AI (External)</text>
+  <text x="795" y="655" font-size="11" fill="#334155">1. Garbage validation &amp; spam rejection</text>
+  <text x="795" y="670" font-size="11" fill="#334155">2. Before / After cleanup photo verification</text>
+  <text x="795" y="685" font-size="11" fill="#86198f">Multimodal vision prompt analysis</text>
+
+  <!-- Connecting Arrows -->
+  <path d="M 390 150 L 390 205" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M 390 245 L 390 315" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M 230 445 L 230 565" fill="none" stroke="#ea580c" stroke-width="2.5" marker-end="url(#arrow-orange)"/>
+  <text x="238" y="495" font-size="11" font-weight="bold" fill="#ea580c">TCP:5432 (SSL)</text>
+
+  <path d="M 700 340 L 775 255" fill="none" stroke="#16a34a" stroke-width="1.8" marker-end="url(#arrow-green)"/>
+  <path d="M 700 370 L 775 355" fill="none" stroke="#7e22ce" stroke-width="1.8"/>
+  <path d="M 700 410 L 775 440" fill="none" stroke="#dc2626" stroke-width="1.8"/>
+  <path d="M 700 430 L 775 530" fill="none" stroke="#2563eb" stroke-width="1.8"/>
+  <path d="M 700 440 L 775 640" fill="none" stroke="#c026d3" stroke-width="1.8"/>
+</svg>

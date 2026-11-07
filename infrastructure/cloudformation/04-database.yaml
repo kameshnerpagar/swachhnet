@@ -1,0 +1,98 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >-
+  SwachhNet Cloud Architecture - 04 Managed Relational Database (RDS PostgreSQL)
+  Provisions an Amazon RDS PostgreSQL instance in private subnets with encryption at rest.
+
+Parameters:
+  EnvironmentName:
+    Type: String
+    Default: swachhnet
+    Description: Prefix used to name database resources
+
+  PrivateSubnet1Id:
+    Type: AWS::EC2::Subnet::Id
+    Description: Private Subnet 1 ID
+
+  PrivateSubnet2Id:
+    Type: AWS::EC2::Subnet::Id
+    Description: Private Subnet 2 ID
+
+  DatabaseSecurityGroupId:
+    Type: AWS::EC2::SecurityGroup::Id
+    Description: Database Security Group ID
+
+  DBMasterUsername:
+    Type: String
+    Default: swachhnet_admin
+    Description: Master username for RDS PostgreSQL
+
+  DBMasterUserPassword:
+    Type: String
+    NoEcho: true
+    Description: Master password for RDS PostgreSQL (Min 8 characters)
+
+  DBInstanceClass:
+    Type: String
+    Default: db.t3.micro
+    AllowedValues:
+      - db.t3.micro
+      - db.t4g.micro
+      - db.t3.small
+    Description: Database instance type (db.t3.micro or db.t4g.micro for economical student deployment)
+
+Resources:
+  DBSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupName: !Sub '${EnvironmentName}-db-subnet-group'
+      DBSubnetGroupDescription: Subnets for SwachhNet RDS PostgreSQL Instance
+      SubnetIds:
+        - !Ref PrivateSubnet1Id
+        - !Ref PrivateSubnet2Id
+      Tags:
+        - Key: Name
+          Value: !Sub '${EnvironmentName}-db-subnet-group'
+
+  RDSInstance:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      DBInstanceIdentifier: !Sub '${EnvironmentName}-postgres'
+      DBName: swachhnet
+      Engine: postgres
+      EngineVersion: '16'
+      DBInstanceClass: !Ref DBInstanceClass
+      AllocatedStorage: '20'
+      StorageType: gp3
+      StorageEncrypted: true
+      MultiAZ: false # Single-AZ for economical student budget
+      PubliclyAccessible: false # Non-publicly accessible: strictly inside private subnet
+      DBSubnetGroupName: !Ref DBSubnetGroup
+      VPCSecurityGroups:
+        - !Ref DatabaseSecurityGroupId
+      MasterUsername: !Ref DBMasterUsername
+      MasterUserPassword: !Ref DBMasterUserPassword
+      BackupRetentionPeriod: 1 # Economical 1-day retention
+      DeletionPolicy: Snapshot
+      Tags:
+        - Key: Name
+          Value: !Sub '${EnvironmentName}-postgres'
+
+Outputs:
+  RDSEndpoint:
+    Description: PostgreSQL Database Endpoint Address
+    Value: !GetAtt RDSInstance.Endpoint.Address
+    Export:
+      Name: !Sub '${EnvironmentName}-RDSEndpoint'
+
+  RDSPort:
+    Description: PostgreSQL Database Port
+    Value: !GetAtt RDSInstance.Endpoint.Port
+    Export:
+      Name: !Sub '${EnvironmentName}-RDSPort'
+
+  DBName:
+    Description: PostgreSQL Database Name
+    Value: swachhnet
+    Export:
+      Name: !Sub '${EnvironmentName}-DBName'
+

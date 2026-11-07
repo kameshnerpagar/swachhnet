@@ -1,0 +1,7 @@
+flowchart TD
+    A[Admin Reviews Complaint Location] --> B[Execute Haversine Distance Formula via SQL]
+    B --> C{Idle Trucks Found in Ward?}
+    C -- No --> C1[Alert Admin: All Fleet Busy / Option to Transfer Ward]
+    C -- Yes --> D[Select Truck with Minimum Distance km]
+    D --> E[Execute Atomic DB Transaction: Set status='assigned' & worker status='busy']
+    E --> F[Push Task to Sanitation Worker Mobile Dashboard]

@@ -1,0 +1,9 @@
+flowchart TD
+    Trigger[check-sla.js Periodic Evaluation] --> Query[Execute SQL Query on Amazon RDS]
+    Query --> Condition{Unresolved Complaints &gt; 48 Hours?}
+    Condition -- No --> Normal[Log SLA Normal - Green Dashboard Status]
+    Condition -- Yes --> Escalation[Execute 3-Tier Escalation Workflow]
+    
+    Escalation --> Alert1[Central Dashboard: Increment City-Wide Breach Counter]
+    Escalation --> Alert2[Amazon CloudWatch: Structured Audit Log Stream]
+    Escalation --> Alert3[Ward Admin Portal: Red Highlight & Priority Dispatch]

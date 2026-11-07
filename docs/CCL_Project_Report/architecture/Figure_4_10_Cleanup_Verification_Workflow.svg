@@ -1,0 +1,62 @@
+<svg width="900" height="500" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="cvArr" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#15803d"/>
+    </marker>
+  </defs>
+
+  <rect width="900" height="500" fill="#f8fafc" rx="10"/>
+  <rect x="25" y="15" width="850" height="45" rx="6" fill="#1e293b"/>
+  <text x="40" y="44" fill="#ffffff" font-size="18" font-weight="bold">Figure 4.10: Before &amp; After Photographic Cleanup Verification Workflow</text>
+
+  <g transform="translate(40, 90)">
+    <rect width="210" height="90" rx="6" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.8"/>
+    <text x="15" y="25" font-size="13" font-weight="bold" fill="#1e40af">1. Worker at Site</text>
+    <text x="15" y="48" font-size="11" fill="#334155">• Cleans garbage heap</text>
+    <text x="15" y="65" font-size="11" fill="#334155">• Takes cleanup photo</text>
+    <text x="15" y="80" font-size="11" fill="#334155">• Submits to /api/worker</text>
+  </g>
+
+  <g transform="translate(290, 90)">
+    <rect width="230" height="90" rx="6" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.8"/>
+    <text x="15" y="25" font-size="13" font-weight="bold" fill="#15803d">2. S3 Direct Upload</text>
+    <text x="15" y="48" font-size="11" fill="#334155">• Saved to cleanup/ folder</text>
+    <text x="15" y="65" font-size="11" fill="#334155">• Generates UUID key</text>
+    <text x="15" y="80" font-size="11" fill="#334155">• Status: pending_verification</text>
+  </g>
+
+  <g transform="translate(560, 90)">
+    <polygon points="80,0 160,45 80,90 0,45" fill="#fdf4ff" stroke="#d946ef" stroke-width="2"/>
+    <text x="35" y="42" font-size="11" font-weight="bold" fill="#86198f">3. Gemini AI</text>
+    <text x="35" y="58" font-size="11" font-weight="bold" fill="#86198f">Comparison</text>
+  </g>
+
+  <g transform="translate(560, 240)">
+    <rect width="180" height="75" rx="6" fill="#fef2f2" stroke="#ef4444" stroke-width="1.5"/>
+    <text x="15" y="25" font-size="12" font-weight="bold" fill="#b91c1c">Incomplete Cleanup</text>
+    <text x="15" y="45" font-size="11" fill="#475569">• AI flags residual waste</text>
+    <text x="15" y="60" font-size="11" fill="#475569">• Worker prompted to reclean</text>
+  </g>
+
+  <g transform="translate(40, 240)">
+    <rect width="480" height="180" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.8"/>
+    <text x="20" y="30" font-size="14" font-weight="bold" fill="#166534">4. Verification Success &amp; Closure</text>
+
+    <rect x="20" y="45" width="440" height="50" rx="4" fill="#ffffff" stroke="#86efac"/>
+    <text x="35" y="68" font-size="12" font-weight="bold" fill="#15803d">A. State Update &amp; Fleet Release</text>
+    <text x="35" y="85" font-size="11" fill="#475569">complaints.status='resolved'; workers.status='idle'</text>
+
+    <rect x="20" y="105" width="440" height="50" rx="4" fill="#ffffff" stroke="#86efac"/>
+    <text x="35" y="128" font-size="12" font-weight="bold" fill="#15803d">B. Gamification Reward</text>
+    <text x="35" y="145" font-size="11" fill="#475569">Citizen receives +10 points; unlock level badges &amp; prompt rating</text>
+  </g>
+
+  <path d="M 250 135 L 290 135" fill="none" stroke="#15803d" stroke-width="2" marker-end="url(#cvArr)"/>
+  <path d="M 520 135 L 560 135" fill="none" stroke="#15803d" stroke-width="2" marker-end="url(#cvArr)"/>
+
+  <path d="M 640 180 L 640 240" fill="none" stroke="#ef4444" stroke-width="2" marker-end="url(#cvArr)"/>
+  <text x="650" y="210" font-size="11" font-weight="bold" fill="#ef4444">Residual Waste</text>
+
+  <path d="M 560 135 L 520 135 L 520 240 L 520 240" fill="none" stroke="#15803d" stroke-width="2.5" marker-end="url(#cvArr)"/>
+  <text x="525" y="190" font-size="11" font-weight="bold" fill="#15803d">Clean</text>
+</svg>

@@ -1,0 +1,87 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >-
+  SwachhNet Cloud Architecture - 03 Storage and SQS Asynchronous Queue
+  Provisions private Amazon S3 bucket with all public access blocked
+  and Amazon SQS queue with Dead-Letter Queue (DLQ).
+
+Parameters:
+  EnvironmentName:
+    Type: String
+    Default: swachhnet
+    Description: Prefix used to name storage and queue resources
+
+Resources:
+  # ── Private Amazon S3 Bucket for Garbage & Cleanup Photos ───────────────────
+  EvidenceStorageBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub '${EnvironmentName}-evidence-${AWS::AccountId}-${AWS::Region}'
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        IgnorePublicAcls: true
+        BlockPublicPolicy: true
+        RestrictPublicBuckets: true
+      VersioningConfiguration:
+        Status: Enabled
+      LifecycleConfiguration:
+        Rules:
+          - Id: CleanOldVersions
+            Status: Enabled
+            NoncurrentVersionExpirationInDays: 30
+      Tags:
+        - Key: Name
+          Value: !Sub '${EnvironmentName}-evidence-storage'
+
+  # ── SQS Dead-Letter Queue (DLQ) ──────────────────────────────────────────────
+  JobsDeadLetterQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: !Sub '${EnvironmentName}-jobs-dlq'
+      MessageRetentionPeriod: 1209600 # 14 days
+      Tags:
+        - Key: Name
+          Value: !Sub '${EnvironmentName}-jobs-dlq'
+
+  # ── SQS Primary Jobs Queue ───────────────────────────────────────────────────
+  JobsQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: !Sub '${EnvironmentName}-jobs-queue'
+      VisibilityTimeout: 60
+      MessageRetentionPeriod: 345600 # 4 days
+      RedrivePolicy:
+        deadLetterTargetArn: !GetAtt JobsDeadLetterQueue.Arn
+        maxReceiveCount: 5
+      Tags:
+        - Key: Name
+          Value: !Sub '${EnvironmentName}-jobs-queue'
+
+Outputs:
+  EvidenceBucketName:
+    Description: Name of private S3 Bucket
+    Value: !Ref EvidenceStorageBucket
+    Export:
+      Name: !Sub '${EnvironmentName}-EvidenceBucketName'
+
+  EvidenceBucketArn:
+    Description: ARN of private S3 Bucket
+    Value: !GetAtt EvidenceStorageBucket.Arn
+    Export:
+      Name: !Sub '${EnvironmentName}-EvidenceBucketArn'
+
+  JobsQueueUrl:
+    Description: URL of SQS Jobs Queue
+    Value: !Ref JobsQueue
+    Export:
+      Name: !Sub '${EnvironmentName}-JobsQueueUrl'
+
+  JobsQueueArn:
+    Description: ARN of SQS Jobs Queue
+    Value: !GetAtt JobsQueue.Arn
+    Export:
+      Name: !Sub '${EnvironmentName}-JobsQueueArn'
+
